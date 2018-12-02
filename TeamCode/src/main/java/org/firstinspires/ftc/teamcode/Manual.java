@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "Manual (Blocks to Java)", group = "")
+@TeleOp(name = "Manual Mode", group = "")
 public class Manual extends LinearOpMode {
     private DcMotor LeftWheel;
     private DcMotor RightWheel;
@@ -25,7 +25,7 @@ public class Manual extends LinearOpMode {
     private void move() {
         // Movement of robot with wheels
         // Left analog stick input
-        LeftWheel.setPower(gamepad1.left_stick_y * 0.5 * gamepad1.left_stick_x * -0.5 * wheelSpeed + -0.1);
+        LeftWheel.setPower(gamepad1.left_stick_y * 0.5 * wheelSpeed - gamepad1.left_stick_x * 0.5 * wheelSpeed);
         RightWheel.setPower(gamepad1.left_stick_y * 0.5 * wheelSpeed + gamepad1.left_stick_x * 0.5 * wheelSpeed);
     }
 
@@ -63,8 +63,8 @@ public class Manual extends LinearOpMode {
         LeftClaw.setDirection(Servo.Direction.REVERSE);
         RightClaw.setDirection(Servo.Direction.FORWARD);
         InceptionArm.setDirection(DcMotorSimple.Direction.FORWARD);
-        LeftWheel.setDirection(DcMotorSimple.Direction.FORWARD);
-        RightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+        LeftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+        RightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     /**
