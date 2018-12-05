@@ -7,8 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+
 @TeleOp(name = "Manual Mode", group = "")
-public class Manual extends LinearOpMode {
+public class ManualMode extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor DefaultArm;
@@ -18,7 +19,6 @@ public class Manual extends LinearOpMode {
 
   double wheelSpeed;
   double armSpeed;
-
 
   /**
    * This function is executed when this Op Mode is selected from the Driver Station.
@@ -66,7 +66,7 @@ public class Manual extends LinearOpMode {
     // Right bumper input
     if (gamepad1.right_bumper) {
       wheelSpeed = 5;
-      armSpeed = 5;
+      armSpeed = 3;
     } else {
       wheelSpeed = 1;
       armSpeed = 2;
@@ -82,9 +82,9 @@ public class Manual extends LinearOpMode {
       LeftClaw.setPosition(0.8);
       RightClaw.setPosition(0.8);
     } else if (gamepad1.y) {
-      DefaultArm.setPower(0.25 * armSpeed);
+      DefaultArm.setPower(0.33 * armSpeed);
     } else if (gamepad1.x) {
-      DefaultArm.setPower(-0.25 * armSpeed);
+      DefaultArm.setPower(-0.33 * armSpeed);
     } else {
       LeftClaw.setPosition(0.3);
       RightClaw.setPosition(0.3);
@@ -100,7 +100,7 @@ public class Manual extends LinearOpMode {
     } else if (gamepad1.a) {
       InceptionArm.setPower(-0.3);
     } else {
-      InceptionArm.setPower(0);
+      InceptionArm.setPower(-0.15);
     }
   }
 

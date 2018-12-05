@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "Autonomous", group = "")
-public class AutonomousDepot extends LinearOpMode {
+@Autonomous(name = "Autonomous Mode", group = "")
+public class AutonomousMode extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor DefaultArm;
@@ -40,7 +40,7 @@ public class AutonomousDepot extends LinearOpMode {
     RightClaw.setDirection(Servo.Direction.FORWARD);
     // Put block to right here
     waitForStart();
-    // FRICKIN DO GO DOWN ARM MOTOR LATCHE TO LANDER
+    // FRICKIN DO GO DOWN ARM MOTOR LATCH TO LANDER
     // Put block to the right here
     sleep(1000);
     DefaultArm.setPower(0);
