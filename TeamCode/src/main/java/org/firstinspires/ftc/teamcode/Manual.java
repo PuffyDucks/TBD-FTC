@@ -57,8 +57,8 @@ public class Manual extends LinearOpMode {
       LeftClaw.setDirection(Servo.Direction.REVERSE);
       RightClaw.setDirection(Servo.Direction.FORWARD);
       InceptionArm.setDirection(DcMotorSimple.Direction.FORWARD);
-      LeftWheel.setDirection(DcMotorSimple.Direction.FORWARD);
-      RightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+      LeftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+      RightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
   }
 
   private void setVariables() {
@@ -66,10 +66,10 @@ public class Manual extends LinearOpMode {
       // Right bumper input
       if (gamepad1.right_bumper) {
           wheelSpeed = 5;
-          armSpeed = 5;
+          armSpeed = 2;
       } else {
           wheelSpeed = 1;
-          armSpeed = 2;
+          armSpeed = 1;
       }
   }
 
@@ -82,9 +82,10 @@ public class Manual extends LinearOpMode {
           LeftClaw.setPosition(0.8);
           RightClaw.setPosition(0.8);
       } else if (gamepad1.y) {
-          DefaultArm.setPower(0.25 * armSpeed);
+          DefaultArm.setPower(0.8 * armSpeed);
+
       } else if (gamepad1.x) {
-          DefaultArm.setPower(-0.25 * armSpeed);
+          DefaultArm.setPower(-0.8 * armSpeed);
       } else {
           LeftClaw.setPosition(0.3);
           RightClaw.setPosition(0.3);
@@ -107,8 +108,8 @@ public class Manual extends LinearOpMode {
   private void move() {
       // Movement of robot with wheels
       // Left analog stick input
-      LeftWheel.setPower(gamepad1.left_stick_y * 0.5 * wheelSpeed - gamepad1.left_stick_x * 0.5 * wheelSpeed);
-      RightWheel.setPower(gamepad1.left_stick_y * 0.5 * wheelSpeed + gamepad1.left_stick_x * 0.5 * wheelSpeed);
+      LeftWheel.setPower(gamepad1.left_stick_y * 0.5 * wheelSpeed + gamepad1.left_stick_x * 0.5 * wheelSpeed);
+      RightWheel.setPower(gamepad1.left_stick_y * 0.5 * wheelSpeed - gamepad1.left_stick_x * 0.5 * wheelSpeed);
   }
 
   private void print() {
