@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "Autonomous Mode", group = "")
-public class AutonomousMode extends LinearOpMode {
+@Autonomous(name = "Autonomous Mode A", group = "")
+public class AutonomousModeA extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor DefaultArm;
@@ -28,6 +28,7 @@ public class AutonomousMode extends LinearOpMode {
     LeftClaw = hardwareMap.servo.get("Left Claw");
     RightClaw = hardwareMap.servo.get("Right Claw");
 
+
     ((DcMotorEx) DefaultArm).setMotorEnable();
     ((DcMotorEx) InceptionArm).setMotorEnable();
     ((DcMotorEx) LeftWheel).setMotorEnable();
@@ -38,20 +39,44 @@ public class AutonomousMode extends LinearOpMode {
     RightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
     LeftClaw.setDirection(Servo.Direction.REVERSE);
     RightClaw.setDirection(Servo.Direction.FORWARD);
-    // Put block to right here
+    //LANDER LAND HERE
+    /**
+    //Idea scrapped for December competition, possibly try for January
+    DefaultArm.setPower(-1.5);
+    telemetry.addData("Debug", 0);
+    telemetry.update();
     waitForStart();
-    // FRICKIN DO GO DOWN ARM MOTOR LATCH TO LANDER
-    // Put block to the right here
-    sleep(1000);
-    DefaultArm.setPower(0);
-    // Orientation
-    LeftWheel.setPower(0);
-    RightWheel.setPower(0);
+    **/
+    // Move 5.66 feet
+    LeftWheel.setPower(0.5);
+    RightWheel.setPower(0.5);
+    sleep(3394);
+    // Deploy team marker
+    InceptionArm.setPower(0.5);
     sleep(500);
-    LeftWheel.setPower(0);
-    RightWheel.setPower(0);
+    LeftClaw.setPosition(0.8);
+    RightClaw.setPosition(0.8);
+    sleep(500);
+    LeftClaw.setPosition(0.3);
+    RightClaw.setPosition(0.3);
+    InceptionArm.setPower(0.5);
+    sleep(500);
+    // 45 degree right turn
+    LeftWheel.setPower(0.5);
+    RightWheel.setPower(0.25);
+    sleep(500);
+    // Move 7 feet
+    LeftWheel.setPower(0.5);
+    RightWheel.setPower(0.5);
+    sleep(4200);
+    // Boost into depot
+    LeftWheel.setPower(1);
+    RightWheel.setPower(1);
+    sleep(200);
+    /**
     // Knock a goldio boy
     // Orientation AGAIN
+      //Do Things With Color Sensor (IMPORT CODE FOR COLOR SENSOR)
     LeftWheel.setPower(0);
     RightWheel.setPower(0);
     sleep(500);
@@ -69,5 +94,6 @@ public class AutonomousMode extends LinearOpMode {
     sleep(2000);
     LeftWheel.setPower(0);
     RightWheel.setPower(0);
+    */
   }
 }

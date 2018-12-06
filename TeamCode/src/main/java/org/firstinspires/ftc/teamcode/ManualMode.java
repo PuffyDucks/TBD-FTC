@@ -13,9 +13,9 @@ public class ManualMode extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor DefaultArm;
+  private DcMotor InceptionArm;
   private Servo LeftClaw;
   private Servo RightClaw;
-  private DcMotor InceptionArm;
 
   double wheelSpeed;
   double armSpeed;
@@ -100,7 +100,7 @@ public class ManualMode extends LinearOpMode {
     } else if (gamepad1.a) {
       InceptionArm.setPower(-0.3);
     } else {
-      InceptionArm.setPower(-0.15);
+      InceptionArm.setPower(-0.1);
     }
   }
 
