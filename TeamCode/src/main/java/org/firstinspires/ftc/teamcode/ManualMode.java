@@ -76,31 +76,31 @@ public class ManualMode extends LinearOpMode {
   private void defaultArm() {
     // Movement of default arm
     // Right bumper, left bumper, Y and X button inputs
-    if (gamepad1.right_bumper && gamepad1.left_bumper) {
-      DefaultArm.setPower(-0.1);
-    } else if (gamepad1.left_bumper) {
-      LeftClaw.setPosition(0.8);
-      RightClaw.setPosition(0.8);
-    } else if (gamepad1.y) {
+    if (gamepad1.y) {
       DefaultArm.setPower(0.33 * armSpeed);
     } else if (gamepad1.x) {
       DefaultArm.setPower(-0.33 * armSpeed);
     } else {
+      DefaultArm.setPower(0);
+    }
+    if (gamepad2.left_bumper) {
+      LeftClaw.setPosition(0.8);
+      RightClaw.setPosition(0.8);
+    } else {
       LeftClaw.setPosition(0.3);
       RightClaw.setPosition(0.3);
-      DefaultArm.setPower(0);
     }
   }
 
   private void inceptionArm() {
     // Movement of inception arm
     // B and A button inputs
-    if (gamepad1.b) {
+    if (gamepad2.b) {
       InceptionArm.setPower(0.3);
-    } else if (gamepad1.a) {
+    } else if (gamepad2.a) {
       InceptionArm.setPower(-0.3);
     } else {
-      InceptionArm.setPower(-0.1);
+      InceptionArm.setPower(-0.05);
     }
   }
 
