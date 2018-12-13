@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "Manual Mode", group = "")
-  public class ManualMode extends LinearOpMode {
+@TeleOp(name = "Manual Mode Singleplayer", group = "")
+public class ManualModeSingleplayer extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor DefaultArm;
@@ -22,8 +22,8 @@ import com.qualcomm.robotcore.hardware.Servo;
   boolean clawsClosed;
 
   /**
-  * This function is executed when this Op Mode is selected from the Driver Station.
-  */
+   * This function is executed when this Op Mode is selected from the Driver Station.
+   */
 
   @Override
   public void runOpMode() {
@@ -40,7 +40,6 @@ import com.qualcomm.robotcore.hardware.Servo;
       setVariables();
       defaultArm();
       inceptionArm();
-      claws();
       move();
       print();
     }
@@ -67,12 +66,9 @@ import com.qualcomm.robotcore.hardware.Servo;
   private void setVariables() {
     // Sets turbo mode with variables
     // Right bumper input
-    if (gamepad1.right_bumper || gamepad2.right_bumper) {
+    if (gamepad1.right_bumper) {
       wheelSpeed = 5;
       armSpeed = 3;
-    } else if (gamepad1.left_bumper || gamepad1.left_bumper) {
-      wheelSpeed = 0.4;
-      armSpeed = 0.75;
     } else {
       wheelSpeed = 1;
       armSpeed = 2;
@@ -81,7 +77,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
   private void defaultArm() {
     // Movement of default arm
-    // Y and X button inputs
+    // Right bumper, left bumper, Y and X button inputs
     if (gamepad1.y) {
       DefaultArm.setPower(0.33 * armSpeed);
     } else if (gamepad1.x) {
@@ -89,27 +85,27 @@ import com.qualcomm.robotcore.hardware.Servo;
     } else {
       DefaultArm.setPower(0);
     }
+    if (gamepad1.left_bumper && clawsClosed == false) {
+      LeftClaw.setPosition(0.8);
+      RightClaw.setPosition(0.8);
+      clawsClosed = true;
+    }
+    if (gamepad1.left_bumper && clawsClosed == true){
+      LeftClaw.setPosition(0.3);
+      RightClaw.setPosition(0.3);
+      clawsClosed = false;
+    }
   }
 
   private void inceptionArm() {
     // Movement of inception arm
     // B and A button inputs
-    if (gamepad2.b) {
+    if (gamepad1.b) {
       InceptionArm.setPower(0.3);
-    } else if (gamepad2.a) {
+  } else if (gamepad1.a) {
       InceptionArm.setPower(-0.3);
     } else {
       InceptionArm.setPower(-0.05);
-    }
-  }
-
-  private void claws() {
-    if (gamepad2.x) {
-      LeftClaw.setPosition(0.8);
-      RightClaw.setPosition(0.8);
-    } else if (gamepad2.y) {
-      LeftClaw.setPosition(0.3);
-      RightClaw.setPosition(0.3);
     }
   }
 

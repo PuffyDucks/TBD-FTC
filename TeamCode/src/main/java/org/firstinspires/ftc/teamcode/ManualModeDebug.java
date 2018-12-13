@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "Manual Mode", group = "")
-  public class ManualMode extends LinearOpMode {
+@TeleOp(name = "Manual Mode Debug", group = "")
+  public class ManualModeDebug extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor DefaultArm;
@@ -19,6 +19,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
   double wheelSpeed;
   double armSpeed;
+  double armSpeed2;
   boolean clawsClosed;
 
   /**
@@ -67,15 +68,22 @@ import com.qualcomm.robotcore.hardware.Servo;
   private void setVariables() {
     // Sets turbo mode with variables
     // Right bumper input
-    if (gamepad1.right_bumper || gamepad2.right_bumper) {
+    if (gamepad1.right_bumper) {
       wheelSpeed = 5;
       armSpeed = 3;
-    } else if (gamepad1.left_bumper || gamepad1.left_bumper) {
+    } else if (gamepad1.left_bumper) {
       wheelSpeed = 0.4;
       armSpeed = 0.75;
     } else {
       wheelSpeed = 1;
       armSpeed = 2;
+    }
+    if (gamepad2.right_bumper) {
+      armSpeed2 = 2;
+    } else if (gamepad2.left_bumper) {
+      armSpeed2 = 0.5;
+    } else {
+      armSpeed2 = 1.25;
     }
   }
 
@@ -94,20 +102,16 @@ import com.qualcomm.robotcore.hardware.Servo;
   private void inceptionArm() {
     // Movement of inception arm
     // B and A button inputs
-    if (gamepad2.b) {
-      InceptionArm.setPower(0.3);
-    } else if (gamepad2.a) {
-      InceptionArm.setPower(-0.3);
-    } else {
-      InceptionArm.setPower(-0.05);
-    }
+    InceptionArm.setPower((gamepad2.left_stick_y * 0.66 - 0.2) * 0.45 * armSpeed2);
   }
 
   private void claws() {
-    if (gamepad2.x) {
+    if (gamepad2.a || gamepad2.x) {
+      // Open claws
       LeftClaw.setPosition(0.8);
       RightClaw.setPosition(0.8);
-    } else if (gamepad2.y) {
+    } else if (gamepad2.b || gamepad2.y) {
+      // Close claws
       LeftClaw.setPosition(0.3);
       RightClaw.setPosition(0.3);
     }

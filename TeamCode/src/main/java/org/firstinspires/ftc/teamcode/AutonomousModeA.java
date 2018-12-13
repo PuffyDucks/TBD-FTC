@@ -50,60 +50,63 @@ public class AutonomousModeA extends LinearOpMode {
     //LANDER LAND HERE
     waitForStart();
     // Move 5.66 feet
+    RightWheel.setPower(0.5);
+    LeftWheel.setPower(0.5);
+    sleep(1000);
+    LeftWheel.setPower(0.25);
+    RightWheel.setPower(0.25);
+    sleep(1000);
+
     for(int i = 0; i < 3; i++) {
-            //while(hsvValues[0] > 130) {
-            sleep(1000);
-                Color.RGBToHSV((int) (ColorSensor.red() * 255),
-                (int) (ColorSensor.green() * 255),
-                (int) (ColorSensor.blue() * 255),
-                hsvValues);
-                double colorInput = hsvValues[0];
-                telemetry.addData("Hue", hsvValues[0]);
-            //}
-            telemetry.update();
-            sleep(1000);
-            if(colorInput < 100 || i == 2) {
-                RightWheel.setPower(-0.5);
-                LeftWheel.setPower(0.5);
-                sleep(400);
-                i = 3;
-                RightWheel.setPower(0.5);
-                LeftWheel.setPower(0.5);
-                sleep(300);
-            } else {
-                LeftWheel.setPower(0.5);
-                RightWheel.setPower(0.5);
-                sleep(650);
-                LeftWheel.setPower(0);
-                RightWheel.setPower(0);
-            }
+      //while(hsvValues[0] > 130) {
+      sleep(1000);
+        Color.RGBToHSV((int) (ColorSensor.red() * 255),
+        (int) (ColorSensor.green() * 255),
+        (int) (ColorSensor.blue() * 255),
+        hsvValues);
+        double colorInput = hsvValues[0];
+        telemetry.addData("Hue", hsvValues[0]);
+      //}
+      //movement between silvers and golds
+      telemetry.update();
+      sleep(1000);
+      //if gold knock it outs of here's
+      if(colorInput < 100 || i == 2) {
+        RightWheel.setPower(-0.5);
+        LeftWheel.setPower(0.5);
+        sleep(600);
+        i = 3;
+        RightWheel.setPower(0.5);
+        LeftWheel.setPower(0.5);
+        sleep(300);
+      } else {
+        LeftWheel.setPower(0.5);
+        RightWheel.setPower(0.5);
+        sleep(650);
+        LeftWheel.setPower(0);
+        RightWheel.setPower(0);
+      }
     }
-    /*
     LeftWheel.setPower(0.5);
     RightWheel.setPower(0.5);
     sleep(3394);
     // Deploy team marker
-    InceptionArm.setPower(0.5);
     sleep(500);
     LeftClaw.setPosition(0.8);
     RightClaw.setPosition(0.8);
     sleep(500);
     LeftClaw.setPosition(0.3);
     RightClaw.setPosition(0.3);
-    InceptionArm.setPower(0.5);
     sleep(500);
     // 45 degree right turn
     LeftWheel.setPower(0.5);
-    RightWheel.setPower(0.25);
+    RightWheel.setPower(-0.5);
     sleep(500);
     // Move 7 feet
-    LeftWheel.setPower(0.5);
-    RightWheel.setPower(0.5);
-    sleep(4200);
-    // Boost into depot
     LeftWheel.setPower(1);
     RightWheel.setPower(1);
-    sleep(200);
-    **/
+    sleep(4200);
+
+
   }
 }
