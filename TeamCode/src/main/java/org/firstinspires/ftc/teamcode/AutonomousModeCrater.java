@@ -55,6 +55,8 @@ public class AutonomousModeCrater extends LinearOpMode {
     //LANDER LAND HERE
 
     waitForStart();
+    marker();
+    /*
     InceptionArm.setPower(-0.15);
     // Move 5.66 feet
     RightWheel.setPower(-0.83);
@@ -88,7 +90,7 @@ public class AutonomousModeCrater extends LinearOpMode {
         RightWheel.setPower(-0.25);
         LeftWheel.setPower(-0.25);
         sleep(200);
-        RightWheel.setPower(-0.5);
+        RightWheel.setPoswer(-0.5);
         LeftWheel.setPower(0.5);
         sleep(700);
         LeftWheel.setPower(-0.2);
@@ -101,7 +103,9 @@ public class AutonomousModeCrater extends LinearOpMode {
         break;
       } else {
         LeftWheel.setPower(0.5);
+
         RightWheel.setPower(0.5);
+
         sleep(1333);
       }
     }
@@ -115,14 +119,16 @@ public class AutonomousModeCrater extends LinearOpMode {
     // LeftWheel.setPower(1);
     // RightWheel.setPower(1);
     // sleep(4200);
+*/
   }
   private void marker() {
-      InceptionArm.setPower(-0.5);
-      LeftClaw.setPosition(0.2);
-      RightClaw.setPosition(0.2);
-      sleep(300);
-      InceptionArm.setPower(0);
-      LeftWheel.setPower(0);
-      RightWheel.setPower(0);
+    InceptionArm.setPower(-1);
+    LeftClaw.setPosition(0.2);
+    RightClaw.setPosition(0.2);
+    sleep(200);
+    InceptionArm.setPower(1);
+    LeftWheel.setPower(0);
+    RightWheel.setPower(0);
+    sleep(200);
   }
 }

@@ -53,13 +53,15 @@ public class AutonomousModeDepot extends LinearOpMode {
     LeftClaw.setDirection(Servo.Direction.REVERSE);
     RightClaw.setDirection(Servo.Direction.FORWARD);
     //LANDER LAND HERE
-
+    LeftClaw.setPosition(0.8);
     waitForStart();
-    InceptionArm.setPower(-0.15);
+
+    ///*
+    InceptionArm.setPower(-0.30);
     // Move 5.66 feet
     RightWheel.setPower(-0.83);
     LeftWheel.setPower(-0.83);
-    sleep(850);
+    sleep(975);
     LeftWheel.setPower(0.5);
     RightWheel.setPower(-0.5);
     sleep(1475);
@@ -84,32 +86,29 @@ public class AutonomousModeDepot extends LinearOpMode {
       //movement between silvers and golds
       telemetry.update();
       //if gold knock it outs of here's
-      if(colorInput < 132 || i == 2) {
-        RightWheel.setPower(-0.25);
-        LeftWheel.setPower(-0.25);
-        sleep(200);
+      if(colorInput < 128 || i == 2) {
+        RightWheel.setPower(0.25);
+        LeftWheel.setPower(0.25);
+        sleep(100);
         RightWheel.setPower(-0.5);
         LeftWheel.setPower(0.5);
-        sleep(1500);
+        sleep(1750);
         LeftWheel.setPower(-0.5);
         RightWheel.setPower(0.5);
-        sleep(1000);
-        LeftWheel.setPower(0);
-        RightWheel.setPower(0);
         if(i==0){
               RightWheel.setPower(0.5);
-              LeftWheel.setPower(0.45);
+              LeftWheel.setPower(0.58);
               sleep(2500);
               marker();
         } else if(i == 1){
-              RightWheel.setPower(0.4);
-              LeftWheel.setPower(0.4);
-              sleep(2500);
+              RightWheel.setPower(0.5);
+              LeftWheel.setPower(0.5);
+              sleep(2000);
               marker();
         } else if(i ==2){
-              RightWheel.setPower(0.45);
+              RightWheel.setPower(0.35);
               LeftWheel.setPower(0.5);
-              sleep(2500);
+              sleep(1200);
               marker();
         }
         break;
@@ -129,14 +128,16 @@ public class AutonomousModeDepot extends LinearOpMode {
     // LeftWheel.setPower(1);
     // RightWheel.setPower(1);
     // sleep(4200);
+//*/
   }
   private void marker() {
-      InceptionArm.setPower(-0.5);
-      LeftClaw.setPosition(0.2);
-      RightClaw.setPosition(0.2);
-      sleep(300);
-      InceptionArm.setPower(0);
-      LeftWheel.setPower(0);
-      RightWheel.setPower(0);
+    InceptionArm.setPower(-1);
+    LeftClaw.setPosition(0.2);
+    RightClaw.setPosition(0.2);
+    sleep(150);
+    InceptionArm.setPower(1);
+    LeftWheel.setPower(0);
+    RightWheel.setPower(0);
+    sleep(175);
   }
 }
