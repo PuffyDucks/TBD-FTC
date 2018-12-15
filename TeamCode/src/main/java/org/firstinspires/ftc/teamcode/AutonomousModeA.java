@@ -65,7 +65,7 @@ public class AutonomousModeA extends LinearOpMode {
     sleep(1475);
     RightWheel.setPower(-0.6);
     LeftWheel.setPower(-0.6);
-    sleep(1600);
+    sleep(1700);
 
     for(int i = 0; i < 3; i++) {
       //while(hsvValues[0] > 130) {
@@ -90,26 +90,31 @@ public class AutonomousModeA extends LinearOpMode {
         sleep(200);
         RightWheel.setPower(-0.5);
         LeftWheel.setPower(0.5);
-        sleep(1333);
+        sleep(1500);
+        LeftWheel.setPower(-0.5);
+        RightWheel.setPower(0.5);
+        sleep(500);
+        LeftWheel.setPower(0);
+        RightWheel.setPower(0);
         if(i==0){
-          RightWheel.setPower(0.5);
-          LeftWheel.setPower(0.2);
-          sleep(700);
+              RightWheel.setPower(0.5);
+              LeftWheel.setPower(0.2);
+              sleep(2000);
         } else if(i == 1){
-          RightWheel.setPower(0.4);
-          LeftWheel.setPower(0.4);
-          sleep(500);
+              RightWheel.setPower(0.4);
+              LeftWheel.setPower(0.4);
+              sleep(2000);
         } else if(i ==2){
-          RightWheel.setPower(0.2);
-          LeftWheel.setPower(0.5);
-          sleep(700);
+              RightWheel.setPower(0.2);
+              LeftWheel.setPower(0.5);
+              sleep(2000);
         }
         break;
       } else {
-        LeftWheel.setPower(0.5);
-        RightWheel.setPower(0.5);
-        sleep(1250);
-      }
+            LeftWheel.setPower(0.5);
+            RightWheel.setPower(0.5);
+            sleep(1333);
+        }
     }
     // Deploy team marker
 
@@ -118,11 +123,6 @@ public class AutonomousModeA extends LinearOpMode {
     RightClaw.setPosition(0.2);
     sleep(300);
     InceptionArm.setPower(0);
-    //LeftWheel.setPower(0.5);
-    sleep(666);
-    //RightWheel.setPower(0.75);
-    //LeftWheel.setPower(0.75);
-    sleep(1000);
     LeftWheel.setPower(0);
     RightWheel.setPower(0);
     // sleep(500);
