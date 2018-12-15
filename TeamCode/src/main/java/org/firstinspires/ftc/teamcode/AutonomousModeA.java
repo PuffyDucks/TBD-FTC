@@ -53,6 +53,7 @@ public class AutonomousModeA extends LinearOpMode {
     LeftClaw.setDirection(Servo.Direction.REVERSE);
     RightClaw.setDirection(Servo.Direction.FORWARD);
     //LANDER LAND HERE
+
     waitForStart();
     InceptionArm.setPower(-0.15);
     // Move 5.66 feet
@@ -90,6 +91,19 @@ public class AutonomousModeA extends LinearOpMode {
         RightWheel.setPower(-0.5);
         LeftWheel.setPower(0.5);
         sleep(1333);
+        if(i==0){
+          RightWheel.setPower(0.5);
+          LeftWheel.setPower(0.2);
+          sleep(700);
+        } else if(i == 1){
+          RightWheel.setPower(0.4);
+          LeftWheel.setPower(0.4);
+          sleep(500);
+        } else if(i ==2){
+          RightWheel.setPower(0.2);
+          LeftWheel.setPower(0.5);
+          sleep(700);
+        }
         break;
       } else {
         LeftWheel.setPower(0.5);
@@ -97,31 +111,28 @@ public class AutonomousModeA extends LinearOpMode {
         sleep(1250);
       }
     }
+    // Deploy team marker
+
+    InceptionArm.setPower(-0.5);
+    LeftClaw.setPosition(0.2);
+    RightClaw.setPosition(0.2);
+    sleep(300);
+    InceptionArm.setPower(0);
+    //LeftWheel.setPower(0.5);
+    sleep(666);
+    //RightWheel.setPower(0.75);
+    //LeftWheel.setPower(0.75);
+    sleep(1000);
+    LeftWheel.setPower(0);
+    RightWheel.setPower(0);
+    // sleep(500);
+    // 45 degree right turn
+    // LeftWheel.setPower(0.5);
+    // RightWheel.setPower(-0.5);
+    // sleep(500);
+    // // Move 7 feet
+    // LeftWheel.setPower(1);
+    // RightWheel.setPower(1);
+    // sleep(4200);
   }
-  // Deploy team marker
-  /*
-  InceptionArm.setPower(0.3);
-  LeftClaw.setPosition(1);
-  RightClaw.setPosition(1);
-  InceptionArm.setPower(-0.1);
-  sleep(300);
-  InceptionArm.setPower(0);
-  LeftWheel.setPower(0.5);
-  sleep(666);
-  RightWheel.setPower(0.75);
-  LeftWheel.setPower(0.75);
-  sleep(1000);
-  LeftWheel.setPower(0);
-  RightWheel.setPower(0);
-  // sleep(500);
-  // 45 degree right turn
-  // LeftWheel.setPower(0.5);
-  // RightWheel.setPower(-0.5);
-  // sleep(500);
-  // // Move 7 feet
-  // LeftWheel.setPower(1);
-  // RightWheel.setPower(1);
-  // sleep(4200);
-  }
-  */
 }
