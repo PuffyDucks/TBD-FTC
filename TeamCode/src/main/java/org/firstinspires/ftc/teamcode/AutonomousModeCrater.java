@@ -16,8 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
-@Autonomous(name = "Autonomous Mode Depot", group = "")
-public class AutonomousModeA extends LinearOpMode {
+@Autonomous(name = "Autonomous Mode Crater", group = "")
+public class AutonomousModeCrater extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor DefaultArm;
@@ -59,13 +59,13 @@ public class AutonomousModeA extends LinearOpMode {
     // Move 5.66 feet
     RightWheel.setPower(-0.83);
     LeftWheel.setPower(-0.83);
-    sleep(1100);
+    sleep(1000);
     LeftWheel.setPower(0.5);
     RightWheel.setPower(-0.5);
     sleep(1475);
     RightWheel.setPower(-0.6);
     LeftWheel.setPower(-0.6);
-    sleep(1700);
+    sleep(1600);
 
     for(int i = 0; i < 3; i++) {
       //while(hsvValues[0] > 130) {
@@ -84,31 +84,20 @@ public class AutonomousModeA extends LinearOpMode {
       //movement between silvers and golds
       telemetry.update();
       //if gold knock it outs of here's
-      if(colorInput < 128 || i == 2) {
+      if(colorInput < 132 || i == 2) {
         RightWheel.setPower(-0.25);
         LeftWheel.setPower(-0.25);
         sleep(200);
         RightWheel.setPower(-0.5);
         LeftWheel.setPower(0.5);
-        sleep(1500);
-        LeftWheel.setPower(-0.5);
-        RightWheel.setPower(0.5);
+        sleep(700);
+        LeftWheel.setPower(-0.2);
+        RightWheel.setPower(-0.2);
         sleep(500);
-        LeftWheel.setPower(0);
-        RightWheel.setPower(0);
-        if(i==0){
-              RightWheel.setPower(0.5);
-              LeftWheel.setPower(0.2);
-              sleep(2000);
-        } else if(i == 1){
-              RightWheel.setPower(0.4);
-              LeftWheel.setPower(0.4);
-              sleep(2000);
-        } else if(i ==2){
-              RightWheel.setPower(0.2);
-              LeftWheel.setPower(0.5);
-              sleep(2000);
-        }
+        LeftWheel.setPower(-0.3);
+        RightWheel.setPower(0.3);
+        sleep()
+
         break;
       } else {
             LeftWheel.setPower(0.5);
@@ -117,14 +106,15 @@ public class AutonomousModeA extends LinearOpMode {
         }
     }
     // Deploy team marker
-
-    InceptionArm.setPower(-0.5);
-    LeftClaw.setPosition(0.2);
-    RightClaw.setPosition(0.2);
-    sleep(300);
-    InceptionArm.setPower(0);
-    LeftWheel.setPower(0);
-    RightWheel.setPower(0);
+    private void marker() {
+        InceptionArm.setPower(-0.5);
+        LeftClaw.setPosition(0.2);
+        RightClaw.setPosition(0.2);
+        sleep(300);
+        InceptionArm.setPower(0);
+        LeftWheel.setPower(0);
+        RightWheel.setPower(0);
+    }
     // sleep(500);
     // 45 degree right turn
     // LeftWheel.setPower(0.5);
