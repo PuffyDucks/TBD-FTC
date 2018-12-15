@@ -58,13 +58,13 @@ public class AutonomousModeA extends LinearOpMode {
     // Move 5.66 feet
     RightWheel.setPower(-0.83);
     LeftWheel.setPower(-0.83);
-    sleep(1000);
+    sleep(1100);
     LeftWheel.setPower(0.5);
     RightWheel.setPower(-0.5);
     sleep(1475);
     RightWheel.setPower(-0.6);
     LeftWheel.setPower(-0.6);
-    sleep(2000);
+    sleep(1600);
 
     for(int i = 0; i < 3; i++) {
       //while(hsvValues[0] > 130) {
@@ -83,57 +83,45 @@ public class AutonomousModeA extends LinearOpMode {
       //movement between silvers and golds
       telemetry.update();
       //if gold knock it outs of here's
-      if(colorInput < 150 || i == 2) {
+      if(colorInput < 128 || i == 2) {
+        RightWheel.setPower(-0.25);
+        LeftWheel.setPower(-0.25);
+        sleep(200);
         RightWheel.setPower(-0.5);
         LeftWheel.setPower(0.5);
         sleep(1333);
-        if(i==2){
-          RightWheel.setPower(0.3);
-          LeftWheel.setPower(0.5);
-        }else if(i==0){
-          RightWheel.setPower(0.5);
-          LeftWheel.setPower(0.3);
-        } else if(i==1){
-          RightWheel.setPower(0.4);
-          LeftWheel.setPower(0.4);
-        }
-        sleep(500);
         break;
-      } else if(i == 1) {
-          LeftWheel.setPower(0.5);
-          RightWheel.setPower(0.5);
-          sleep(1100);
-        } else if (i ==0) {
-            LeftWheel.setPower(0.5);
-            RightWheel.setPower(0.5);
-            sleep(1200);
-        }
+      } else {
+        LeftWheel.setPower(0.5);
+        RightWheel.setPower(0.5);
+        sleep(1250);
       }
     }
-    // Deploy team marker
-    /*
-    InceptionArm.setPower(0.3);
-    LeftClaw.setPosition(1);
-    RightClaw.setPosition(1);
-    InceptionArm.setPower(-0.1);
-    sleep(300);
-    InceptionArm.setPower(0);
-    LeftWheel.setPower(0.5);
-    sleep(666);
-    RightWheel.setPower(0.75);
-    LeftWheel.setPower(0.75);
-    sleep(1000);
-    LeftWheel.setPower(0);
-    RightWheel.setPower(0);
-    // sleep(500);
-    // 45 degree right turn
-    // LeftWheel.setPower(0.5);
-    // RightWheel.setPower(-0.5);
-    // sleep(500);
-    // // Move 7 feet
-    // LeftWheel.setPower(1);
-    // RightWheel.setPower(1);
-    // sleep(4200);
+  }
+  // Deploy team marker
+  /*
+  InceptionArm.setPower(0.3);
+  LeftClaw.setPosition(1);
+  RightClaw.setPosition(1);
+  InceptionArm.setPower(-0.1);
+  sleep(300);
+  InceptionArm.setPower(0);
+  LeftWheel.setPower(0.5);
+  sleep(666);
+  RightWheel.setPower(0.75);
+  LeftWheel.setPower(0.75);
+  sleep(1000);
+  LeftWheel.setPower(0);
+  RightWheel.setPower(0);
+  // sleep(500);
+  // 45 degree right turn
+  // LeftWheel.setPower(0.5);
+  // RightWheel.setPower(-0.5);
+  // sleep(500);
+  // // Move 7 feet
+  // LeftWheel.setPower(1);
+  // RightWheel.setPower(1);
+  // sleep(4200);
   }
   */
 }
