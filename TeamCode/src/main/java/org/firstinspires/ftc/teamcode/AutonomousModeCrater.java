@@ -16,8 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
-@Autonomous(name = "Autonomous Mode Crater", group = "")
-public class AutonomousModeCrater extends LinearOpMode {
+@Autonomous(name = "Autonomous Mode Depot", group = "")
+public class AutonomousModeDepot extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor DefaultArm;
@@ -53,15 +53,15 @@ public class AutonomousModeCrater extends LinearOpMode {
     LeftClaw.setDirection(Servo.Direction.REVERSE);
     RightClaw.setDirection(Servo.Direction.FORWARD);
     //LANDER LAND HERE
-
+    LeftClaw.setPosition(0.8);
     waitForStart();
-    marker();
-    /*
-    InceptionArm.setPower(-0.15);
+
+    ///*
+    InceptionArm.setPower(-0.30);
     // Move 5.66 feet
     RightWheel.setPower(-0.83);
     LeftWheel.setPower(-0.83);
-    sleep(850);
+    sleep(975);
     LeftWheel.setPower(0.5);
     RightWheel.setPower(-0.5);
     sleep(1475);
@@ -86,28 +86,21 @@ public class AutonomousModeCrater extends LinearOpMode {
       //movement between silvers and golds
       telemetry.update();
       //if gold knock it outs of here's
-      if(colorInput < 132 || i == 2) {
-        RightWheel.setPower(-0.25);
-        LeftWheel.setPower(-0.25);
-        sleep(200);
-        RightWheel.setPoswer(-0.5);
+      if(colorInput < 128 || i == 2) {
+        RightWheel.setPower(0.25);
+        LeftWheel.setPower(0.25);
+        sleep(100);
+        RightWheel.setPower(-0.5);
         LeftWheel.setPower(0.5);
-        sleep(700);
-        LeftWheel.setPower(-0.2);
-        RightWheel.setPower(-0.2);
-        sleep(500);
-        LeftWheel.setPower(-0.3);
-        RightWheel.setPower(0.3);
-        sleep(200);
-
+        sleep(1750);
+        LeftWheel.setPower(0);
+        RightWheel.setPower(0);
         break;
       } else {
-        LeftWheel.setPower(0.5);
-
-        RightWheel.setPower(0.5);
-
-        sleep(1333);
-      }
+            LeftWheel.setPower(0.5);
+            RightWheel.setPower(0.5);
+            sleep(1333);
+        }
     }
     // Deploy team marker
     // sleep(500);
@@ -119,16 +112,16 @@ public class AutonomousModeCrater extends LinearOpMode {
     // LeftWheel.setPower(1);
     // RightWheel.setPower(1);
     // sleep(4200);
-*/
+//*/
   }
   private void marker() {
     InceptionArm.setPower(-1);
     LeftClaw.setPosition(0.2);
     RightClaw.setPosition(0.2);
-    sleep(200);
+    sleep(150);
     InceptionArm.setPower(1);
     LeftWheel.setPower(0);
     RightWheel.setPower(0);
-    sleep(200);
+    sleep(175);
   }
 }
