@@ -1,4 +1,4 @@
-    package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Color;
 
@@ -10,6 +10,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Locale;
 
 @Autonomous(name = "Autonomous Mode Depot", group = "")
 public class AutonomousModeA extends LinearOpMode {
@@ -20,6 +25,7 @@ public class AutonomousModeA extends LinearOpMode {
   private Servo RightClaw;
   private DcMotor InceptionArm;
   private ColorSensor ColorSensor;
+  private DistanceSensor DistanceSensor;
 
   /**
    * This function is executed when this Op Mode is selected from the Driver Station.
@@ -33,10 +39,9 @@ public class AutonomousModeA extends LinearOpMode {
     LeftClaw = hardwareMap.servo.get("Left Claw");
     RightClaw = hardwareMap.servo.get("Right Claw");
     ColorSensor = hardwareMap.colorSensor.get("Color Sensor");
-
+    DistanceSensor = hardwareMap.get(DistanceSensor.class, "Color Sensor");
     float hsvValues[] = {0F, 0F, 0F};
     final float values[] = hsvValues;
-
     ((DcMotorEx) DefaultArm).setMotorEnable();
     ((DcMotorEx) InceptionArm).setMotorEnable();
     ((DcMotorEx) LeftWheel).setMotorEnable();
@@ -49,51 +54,65 @@ public class AutonomousModeA extends LinearOpMode {
     RightClaw.setDirection(Servo.Direction.FORWARD);
     //LANDER LAND HERE
     waitForStart();
-    InceptionArm.setPower(-0.05);
+    InceptionArm.setPower(-0.15);
     // Move 5.66 feet
     RightWheel.setPower(-0.83);
     LeftWheel.setPower(-0.83);
     sleep(1000);
     LeftWheel.setPower(0.5);
     RightWheel.setPower(-0.5);
-    sleep(1333);
-    RightWheel.setPower(-0.5);
-    LeftWheel.setPower(-0.5);
-    sleep(1500);
+    sleep(1475);
+    RightWheel.setPower(-0.6);
+    LeftWheel.setPower(-0.6);
+    sleep(2000);
 
     for(int i = 0; i < 3; i++) {
       //while(hsvValues[0] > 130) {
-        sleep(500);
-        Color.RGBToHSV((int) (ColorSensor.red() * 255),
-        (int) (ColorSensor.green() * 255),
-        (int) (ColorSensor.blue() * 255),
-        hsvValues);
-        double colorInput = hsvValues[0];
-        telemetry.addData("Hue: "+i, hsvValues[0]);
+      LeftWheel.setPower(0);
+      RightWheel.setPower(0);
+      sleep(500);
+      Color.RGBToHSV((int) (ColorSensor.red() * 255),
+      (int) (ColorSensor.green() * 255),
+      (int) (ColorSensor.blue() * 255),
+      hsvValues);
+      double colorInput = hsvValues[0];
+      telemetry.addData("Hue: "+i, hsvValues[0]);
+      telemetry.addData("Distance (cm)",
+              String.format(Locale.US, "%.02f", DistanceSensor.getDistance(DistanceUnit.CM)));
       //}
       //movement between silvers and golds
       telemetry.update();
       //if gold knock it outs of here's
-      if(colorInput < 130 || i == 2) {
+      if(colorInput < 150 || i == 2) {
         RightWheel.setPower(-0.5);
         LeftWheel.setPower(0.5);
         sleep(1333);
-        RightWheel.setPower(1);
-        LeftWheel.setPower(1);
-        InceptionArm.setPower(-0.2);
-        sleep(333);
+        if(i==2){
+          RightWheel.setPower(0.3);
+          LeftWheel.setPower(0.5);
+        }else if(i==0){
+          RightWheel.setPower(0.5);
+          LeftWheel.setPower(0.3);
+        } else if(i==1){
+          RightWheel.setPower(0.4);
+          LeftWheel.setPower(0.4);
+        }
+        sleep(500);
         break;
-      } else {
-        LeftWheel.setPower(0.5);
-        RightWheel.setPower(0.5);
-        sleep(1000);
-        LeftWheel.setPower(0);
-        RightWheel.setPower(0);
+      } else if(i == 1) {
+          LeftWheel.setPower(0.5);
+          RightWheel.setPower(0.5);
+          sleep(1100);
+        } else if (i ==0) {
+            LeftWheel.setPower(0.5);
+            RightWheel.setPower(0.5);
+            sleep(1200);
+        }
       }
     }
     // Deploy team marker
+    /*
     InceptionArm.setPower(0.3);
-    sleep(300);
     LeftClaw.setPosition(1);
     RightClaw.setPosition(1);
     InceptionArm.setPower(-0.1);
@@ -107,7 +126,7 @@ public class AutonomousModeA extends LinearOpMode {
     LeftWheel.setPower(0);
     RightWheel.setPower(0);
     // sleep(500);
-    // // 45 degree right turn
+    // 45 degree right turn
     // LeftWheel.setPower(0.5);
     // RightWheel.setPower(-0.5);
     // sleep(500);
@@ -115,7 +134,6 @@ public class AutonomousModeA extends LinearOpMode {
     // LeftWheel.setPower(1);
     // RightWheel.setPower(1);
     // sleep(4200);
-
-
   }
+  */
 }
