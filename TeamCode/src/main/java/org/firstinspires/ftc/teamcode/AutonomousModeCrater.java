@@ -59,7 +59,7 @@ public class AutonomousModeCrater extends LinearOpMode {
     // Move 5.66 feet
     RightWheel.setPower(-0.83);
     LeftWheel.setPower(-0.83);
-    sleep(1000);
+    sleep(850);
     LeftWheel.setPower(0.5);
     RightWheel.setPower(-0.5);
     sleep(1475);
@@ -96,25 +96,16 @@ public class AutonomousModeCrater extends LinearOpMode {
         sleep(500);
         LeftWheel.setPower(-0.3);
         RightWheel.setPower(0.3);
-        sleep()
+        sleep(200);
 
         break;
       } else {
-            LeftWheel.setPower(0.5);
-            RightWheel.setPower(0.5);
-            sleep(1333);
-        }
+        LeftWheel.setPower(0.5);
+        RightWheel.setPower(0.5);
+        sleep(1333);
+      }
     }
     // Deploy team marker
-    private void marker() {
-        InceptionArm.setPower(-0.5);
-        LeftClaw.setPosition(0.2);
-        RightClaw.setPosition(0.2);
-        sleep(300);
-        InceptionArm.setPower(0);
-        LeftWheel.setPower(0);
-        RightWheel.setPower(0);
-    }
     // sleep(500);
     // 45 degree right turn
     // LeftWheel.setPower(0.5);
@@ -124,5 +115,14 @@ public class AutonomousModeCrater extends LinearOpMode {
     // LeftWheel.setPower(1);
     // RightWheel.setPower(1);
     // sleep(4200);
+  }
+  private void marker() {
+      InceptionArm.setPower(-0.5);
+      LeftClaw.setPosition(0.2);
+      RightClaw.setPosition(0.2);
+      sleep(300);
+      InceptionArm.setPower(0);
+      LeftWheel.setPower(0);
+      RightWheel.setPower(0);
   }
 }
