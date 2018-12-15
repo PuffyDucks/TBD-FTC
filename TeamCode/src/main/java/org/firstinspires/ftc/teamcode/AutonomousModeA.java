@@ -27,6 +27,9 @@ public class AutonomousModeA extends LinearOpMode {
   private ColorSensor ColorSensor;
   private DistanceSensor DistanceSensor;
 
+  double distance;
+  boolean foundMineral;
+
   /**
    * This function is executed when this Op Mode is selected from the Driver Station.
    */
@@ -59,7 +62,7 @@ public class AutonomousModeA extends LinearOpMode {
     // Move 5.66 feet
     RightWheel.setPower(-0.83);
     LeftWheel.setPower(-0.83);
-    sleep(1100);
+    sleep(900);
     LeftWheel.setPower(0.5);
     RightWheel.setPower(-0.5);
     sleep(1475);
@@ -67,8 +70,9 @@ public class AutonomousModeA extends LinearOpMode {
     LeftWheel.setPower(-0.6);
     sleep(1600);
 
-    for(int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3;) {
       //while(hsvValues[0] > 130) {
+      foundMineral = false;
       LeftWheel.setPower(0);
       RightWheel.setPower(0);
       sleep(500);
@@ -83,32 +87,41 @@ public class AutonomousModeA extends LinearOpMode {
       //}
       //movement between silvers and golds
       telemetry.update();
-      //if gold knock it outs of here's
-      if(colorInput < 128 || i == 2) {
-        RightWheel.setPower(-0.25);
-        LeftWheel.setPower(-0.25);
-        sleep(200);
-        RightWheel.setPower(-0.5);
-        LeftWheel.setPower(0.5);
-        sleep(1333);
-        if(i==0){
-          RightWheel.setPower(0.5);
-          LeftWheel.setPower(0.2);
-          sleep(700);
-        } else if(i == 1){
-          RightWheel.setPower(0.4);
-          LeftWheel.setPower(0.4);
-          sleep(500);
-        } else if(i ==2){
-          RightWheel.setPower(0.2);
-          LeftWheel.setPower(0.5);
-          sleep(700);
+      while (foundMineral = false) {
+        if (DistanceSensor.getDistance(DistanceUnit.CM) > 300) {
+          RightWheel.setPower(-0.15);
+          LeftWheel.setPower(0.15);
+        } else if (DistanceSensor.getDistance(DistanceUnit.CM) < 300) {
+          if (colorInput < 128) {
+            //if gold knock it outs of here's
+            RightWheel.setPower(-0.25);
+            LeftWheel.setPower(-0.25);
+            sleep(200);
+            RightWheel.setPower(-0.5);
+            LeftWheel.setPower(0.5);
+            sleep(1333);
+            if (i==0) {
+              RightWheel.setPower(0.5);
+              LeftWheel.setPower(0.2);
+              sleep(700);
+            } else if (i == 1) {
+              RightWheel.setPower(0.4);
+              LeftWheel.setPower(0.4);
+              sleep(500);
+            } else if (i ==2) {
+              RightWheel.setPower(0.2);
+              LeftWheel.setPower(0.5);
+              sleep(700);
+            }
+            break;
+          } else {
+            i++;
+            foundMineral = true;
+            RightWheel.setPower(0.5);
+            LeftWheel.setPower(0.5);
+            sleep(300);
+          }
         }
-        break;
-      } else {
-        LeftWheel.setPower(0.5);
-        RightWheel.setPower(0.5);
-        sleep(1250);
       }
     }
     // Deploy team marker
