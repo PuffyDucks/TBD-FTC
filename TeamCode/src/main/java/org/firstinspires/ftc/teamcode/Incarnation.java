@@ -8,19 +8,16 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "Manual Program", group = "")
-  public class ManualProgram extends LinearOpMode {
+@TeleOp(name = "Incarnation", group = "")
+  public class Incarnation extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
-  private DcMotor DefaultArm;
-  private DcMotor InceptionArm;
-  private Servo LeftClaw;
-  private Servo RightClaw;
+  private DcMotor LanderArm;
+  private DcMotor Succ;
 
   double wheelSpeed;
   double armSpeed;
   double armSpeed2;
-  boolean clawsClosed;
 
   /**
   * This function is executed when this Op Mode is selected from the Driver Station.
@@ -28,13 +25,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
   @Override
   public void runOpMode() {
-    LeftWheel = hardwareMap.dcMotor.get("Left Wheel");
-    RightWheel = hardwareMap.dcMotor.get("Right Wheel");
-    DefaultArm = hardwareMap.dcMotor.get("Default Arm");
-    LeftClaw = hardwareMap.servo.get("Left Claw");
-    RightClaw = hardwareMap.servo.get("Right Claw");
-    InceptionArm = hardwareMap.dcMotor.get("Inception Arm");
-    clawsClosed = false;
+    LeftWheel = hardwareMap.dcMotor.get("LeftWheel");
+    RightWheel = hardwareMap.dcMotor.get("RightWheel");
+    LanderArm = hardwareMap.dcMotor.get("LanderArm");
+    Succ = hardwareMap.dcMotor.get("Succ");
 
     //these are functions below
     call();
@@ -43,9 +37,8 @@ import com.qualcomm.robotcore.hardware.Servo;
     while (opModeIsActive()) {
       //see below
       setVariables();
-      defaultArm();
-      inceptionArm();
-      claws();
+      landerArm();
+      succ();
       move();
       print();
     }
@@ -54,17 +47,15 @@ import com.qualcomm.robotcore.hardware.Servo;
   private void call() {
     // Call program, and devices
     waitForStart();
-    ((DcMotorEx) DefaultArm).setMotorEnable();
+    ((DcMotorEx) LanderArm).setMotorEnable();
     ((DcMotorEx) LeftWheel).setMotorEnable();
     ((DcMotorEx) RightWheel).setMotorEnable();
   }
 
   private void set() {
     // Set direction of devices
-    DefaultArm.setDirection(DcMotorSimple.Direction.FORWARD);
-    LeftClaw.setDirection(Servo.Direction.REVERSE);
-    RightClaw.setDirection(Servo.Direction.FORWARD);
-    InceptionArm.setDirection(DcMotorSimple.Direction.FORWARD);
+    LanderArm.setDirection(DcMotorSimple.Direction.FORWARD);
+    Succ.setDirection(DcMotorSimple.Direction.FORWARD);
     LeftWheel.setDirection(DcMotorSimple.Direction.FORWARD);
     RightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
   }
@@ -91,34 +82,22 @@ import com.qualcomm.robotcore.hardware.Servo;
     }
   }
 
-  private void defaultArm() {
-    // Movement of default arm
+  private void landerArm() {
+    // Movement of lander arm
     // Y and X button inputs
     if (gamepad1.y) {
-      DefaultArm.setPower(0.33 * armSpeed);
+      LanderArm.setPower(0.33 * armSpeed);
     } else if (gamepad1.x) {
-      DefaultArm.setPower(-0.33 * armSpeed);
+      LanderArm.setPower(-0.33 * armSpeed);
     } else {
-      DefaultArm.setPower(0);
+      LanderArm.setPower(0);
     }
   }
 
-  private void inceptionArm() {
-    // Movement of inception arm
+  private void succ() {
+    // Movement of succ arm
     // Left analog stick y input
-    InceptionArm.setPower((gamepad2.left_stick_y * 0.66 - 0.2) * 0.45 * armSpeed2);
-  }
-
-  private void claws() {
-    if (gamepad2.a || gamepad2.x) {
-      // Open claws
-      LeftClaw.setPosition(0.8);
-      RightClaw.setPosition(0.8);
-    } else if (gamepad2.b || gamepad2.y) {
-      // Close claws
-      LeftClaw.setPosition(0.3);
-      RightClaw.setPosition(0.3);
-    }
+    Succ.setPower(gamepad2.left_stick_y * armSpeed2);
   }
 
   private void move() {
@@ -135,7 +114,6 @@ import com.qualcomm.robotcore.hardware.Servo;
     telemetry.addData("Right Wheel Power", RightWheel.getPower());
     telemetry.addData("Left Wheel Position", LeftWheel.getCurrentPosition());
     telemetry.addData("Right Wheel Position", RightWheel.getCurrentPosition());
-    telemetry.addData("Arm Position", DefaultArm.getCurrentPosition());
     telemetry.update();
   }
 }
