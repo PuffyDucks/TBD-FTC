@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.Servo;
   private DcMotor LanderArm2;
   private DcMotor Succ;
   private DcMotor SuccArm;
-  private DcMotor SuccExpand;
+  private DcMotor SuccExtend;
 
   double wheelSpeed;
   double armSpeed;
@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.hardware.Servo;
     LanderArm2 = hardwareMap.dcMotor.get("LanderArm2");
     Succ = hardwareMap.dcMotor.get("Succ");
     SuccArm = hardwareMap.dcMotor.get("SuccArm");
-    SuccExpand = hardwareMap.dcMotor.get("SuccExpand");
+    SuccExtend = hardwareMap.dcMotor.get("SuccExtend");
 
     //these are functions below
     call();
@@ -47,7 +47,7 @@ import com.qualcomm.robotcore.hardware.Servo;
       landerArm2();
       succ();
       succArm();
-      succExpand();
+      succExtend();
       move();
       print();
     }
@@ -97,7 +97,7 @@ import com.qualcomm.robotcore.hardware.Servo;
     if (gamepad2.a) {
     Succ.setPower(1 * armSpeed);
     } else if (gamepad2.b) {
-      Succ.setPower(1 * armSpeed);
+      Succ.setPower(-1 * armSpeed);
     } else {
       Succ.setPower(0);
     }
@@ -105,16 +105,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 
   private void succArm() {
     if (gamepad2.x) {
-      SuccArm.setPower(0.5 * armSpeed);
+      SuccExtend.setPower(0.5 * armSpeed);
     } else if (gamepad2.y) {
-      SuccArm.setPower(-0.5 * armSpeed);
+      SuccExtend.setPower(-0.5 * armSpeed);
     } else {
-      SuccArm.setPower(0);
+      SuccExtend.setPower(0);
     }
   }
 
   private void succExtend() {
-    SuccExtend.setPower(gamepad2.left_stick_y * armSpeed2);
+    SuccArm.setPower(-1 * gamepad2.left_stick_y * armSpeed2 + 0.25);
   }
 
   private void landerArm() {
@@ -156,6 +156,8 @@ import com.qualcomm.robotcore.hardware.Servo;
     telemetry.addData("Right Wheel Power", RightWheel.getPower());
     telemetry.addData("Left Wheel Position", LeftWheel.getCurrentPosition());
     telemetry.addData("Right Wheel Position", RightWheel.getCurrentPosition());
+    telemetry.addData("SuccExtend Power", SuccExtend.getPower());
+    telemetry.addData("GamePad2 Left Stick Y", gamepad2.left_stick_y);
     telemetry.update();
   }
 }
