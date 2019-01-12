@@ -13,7 +13,10 @@ import com.qualcomm.robotcore.hardware.Servo;
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor LanderArm;
+  private DcMotor LanderArm2;
   private DcMotor Succ;
+  private DcMotor SuccArm;
+  private DcMotor SuccExpand;
 
   double wheelSpeed;
   double armSpeed;
@@ -28,7 +31,10 @@ import com.qualcomm.robotcore.hardware.Servo;
     LeftWheel = hardwareMap.dcMotor.get("LeftWheel");
     RightWheel = hardwareMap.dcMotor.get("RightWheel");
     LanderArm = hardwareMap.dcMotor.get("LanderArm");
+    LanderArm2 = hardwareMap.dcMotor.get("LanderArm2");
     Succ = hardwareMap.dcMotor.get("Succ");
+    SuccArm = hardwareMap.dcMotor.get("SuccArm");
+    SuccExpand = hardwareMap.dcMotor.get("SuccExpand");
 
     //these are functions below
     call();
@@ -38,7 +44,10 @@ import com.qualcomm.robotcore.hardware.Servo;
       //see below
       setVariables();
       landerArm();
+      landerArm2();
       succ();
+      succArm();
+      succExpand();
       move();
       print();
     }
@@ -47,9 +56,11 @@ import com.qualcomm.robotcore.hardware.Servo;
   private void call() {
     // Call program, and devices
     waitForStart();
-    ((DcMotorEx) LanderArm).setMotorEnable();
     ((DcMotorEx) LeftWheel).setMotorEnable();
     ((DcMotorEx) RightWheel).setMotorEnable();
+    ((DcMotorEx) LanderArm).setMotorEnable();
+    ((DcMotorEx) LanderArm2).setMotorEnable();
+    ((DcMotorEx) Succ).setMotorEnable();
   }
 
   private void set() {
@@ -74,30 +85,61 @@ import com.qualcomm.robotcore.hardware.Servo;
       armSpeed = 2;
     }
     if (gamepad2.right_bumper) {
-      armSpeed2 = 2;
+      armSpeed2 = 1;
     } else if (gamepad2.left_bumper) {
+      armSpeed2 = 0.25;
+    } else {
       armSpeed2 = 0.5;
-    } else {
-      armSpeed2 = 1.25;
-    }
-  }
-
-  private void landerArm() {
-    // Movement of lander arm
-    // Y and X button inputs
-    if (gamepad1.y) {
-      LanderArm.setPower(0.33 * armSpeed);
-    } else if (gamepad1.x) {
-      LanderArm.setPower(-0.33 * armSpeed);
-    } else {
-      LanderArm.setPower(0);
     }
   }
 
   private void succ() {
-    // Movement of succ arm
+    if (gamepad2.a) {
+    Succ.setPower(1 * armSpeed);
+    } else if (gamepad2.b) {
+      Succ.setPower(1 * armSpeed);
+    } else {
+      Succ.setPower(0);
+    }
+  }
+
+  private void succArm() {
+    if (gamepad2.x) {
+      SuccArm.setPower(0.5 * armSpeed);
+    } else if (gamepad2.y) {
+      SuccArm.setPower(-0.5 * armSpeed);
+    } else {
+      SuccArm.setPower(0);
+    }
+  }
+
+  private void succExtend() {
+    SuccExtend.setPower(gamepad2.left_stick_y * armSpeed2);
+  }
+
+  private void landerArm() {
+    // Movement of lander arm
     // Left analog stick y input
-    Succ.setPower(gamepad2.left_stick_y * armSpeed2);
+    if (gamepad1.a) {
+      LanderArm.setPower(0.2 * armSpeed);
+    } else if (gamepad1.b) {
+      LanderArm.setPower(-0.33 * armSpeed);
+    } else {
+      LanderArm.setPower(0);
+
+    }
+  }
+
+  private void landerArm2() {
+    // Movement of lander arm 2
+    // Left analog stick y input
+    if (gamepad1.x) {
+      LanderArm2.setPower(-0.33 * armSpeed);
+    } else if (gamepad1.y) {
+      LanderArm2.setPower(0.2 * armSpeed);
+    } else {
+      LanderArm2.setPower(0);
+    }
   }
 
   private void move() {
