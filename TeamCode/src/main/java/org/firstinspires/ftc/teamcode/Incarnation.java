@@ -85,19 +85,19 @@ import com.qualcomm.robotcore.hardware.Servo;
       armSpeed = 2;
     }
     if (gamepad2.right_bumper) {
-      armSpeed2 = 1;
+      armSpeed2 = 1.5;
     } else if (gamepad2.left_bumper) {
-      armSpeed2 = 0.25;
-    } else {
       armSpeed2 = 0.5;
+    } else {
+      armSpeed2 = 0.75;
     }
   }
 
   private void succ() {
     if (gamepad2.a) {
-    Succ.setPower(1 * armSpeed);
+    Succ.setPower(0.5 * armSpeed2);
     } else if (gamepad2.b) {
-      Succ.setPower(-1 * armSpeed);
+      Succ.setPower(-0.5 * armSpeed2);
     } else {
       Succ.setPower(0);
     }
@@ -105,16 +105,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 
   private void succArm() {
     if (gamepad2.x) {
-      SuccExtend.setPower(0.5 * armSpeed);
+      SuccExtend.setPower(0.6 * armSpeed2);
     } else if (gamepad2.y) {
-      SuccExtend.setPower(-0.5 * armSpeed);
+      SuccExtend.setPower(-0.6 * armSpeed2);
     } else {
       SuccExtend.setPower(0);
     }
   }
 
   private void succExtend() {
-    SuccArm.setPower(-1 * gamepad2.left_stick_y * armSpeed2 + 0.25);
+    SuccArm.setPower(-0.5 * gamepad2.left_stick_y * armSpeed2 + 0.15);
   }
 
   private void landerArm() {
