@@ -1,15 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name = "DepotAuto", group = "")
-  public class DepotAuto extends LinearOpMode {
+import java.util.Locale;
+
+@Autonomous(name = "DepotAuto", group = "")
+public class DepotAuto extends LinearOpMode {
   private DcMotor LeftWheel;
   private DcMotor RightWheel;
   private DcMotor LanderArm;
@@ -17,14 +25,9 @@ import com.qualcomm.robotcore.hardware.Servo;
   private DcMotor Succ;
   private DcMotor SuccArm;
 
-  double wheelSpeed;
-  double armSpeed;
-  double armSpeed2;
-
   /**
-  * This function is executed when this Op Mode is selected from the Driver Station.
-  */
-
+   * This function is executed when this Op Mode is selected from the Driver Station.
+   */
   @Override
   public void runOpMode() {
     LeftWheel = hardwareMap.dcMotor.get("LeftWheel");
@@ -34,104 +37,40 @@ import com.qualcomm.robotcore.hardware.Servo;
     Succ = hardwareMap.dcMotor.get("Succ");
     SuccArm = hardwareMap.dcMotor.get("SuccArm");
 
-    //these are functions below
-    call();
-    set();
-
-    while (opModeIsActive()) {
-      //see below
-      setVariables();
-      landerArm();
-      landerArm2();
-      succ();
-      move();
-      print();
-    }
-  }
-
-  private void call() {
-    // Call program, and devices
-    waitForStart();
-    ((DcMotorEx) LeftWheel).setMotorEnable();
-    ((DcMotorEx) RightWheel).setMotorEnable();
-    ((DcMotorEx) LanderArm).setMotorEnable();
-    ((DcMotorEx) LanderArm2).setMotorEnable();
-    ((DcMotorEx) Succ).setMotorEnable();
-  }
-
-  private void set() {
-    // Set direction of devices
-    LanderArm.setDirection(DcMotorSimple.Direction.FORWARD);
-    Succ.setDirection(DcMotorSimple.Direction.FORWARD);
-    LeftWheel.setDirection(DcMotorSimple.Direction.FORWARD);
     RightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
-  }
 
-  private void setVariables() {
-    // Sets turbo mode with variables
-    // Right bumper input
-    if (gamepad1.right_bumper) {
-      wheelSpeed = 5;
-      armSpeed = 3;
-    } else if (gamepad1.left_bumper) {
-      wheelSpeed = 0.4;
-      armSpeed = 0.75;
-    } else {
-      wheelSpeed = 1;
-      armSpeed = 2;
-    }
-    if (gamepad2.right_bumper) {
-      armSpeed2 = 1;
-    } else if (gamepad2.left_bumper) {
-      armSpeed2 = 0.25;
-    } else {
-      armSpeed2 = 0.5;
-    }
-  }
+    waitForStart();
 
-  private void succ() {
-    Succ.setPower(gamepad2.left_stick_y * armSpeed2 * -1);
-  }
+    LanderArm.setPower(-0.5);
+    LanderArm2.setPower(0.5);
+    sleep(2250);
+    LanderArm.setPower(0);
+    LanderArm2.setPower(0);
 
-  private void landerArm() {
-    // Movement of lander arm
-    // Left analog stick y input
-    if (gamepad1.a) {
-      LanderArm.setPower(0.2 * armSpeed);
-    } else if (gamepad1.b) {
-      LanderArm.setPower(-0.33 * armSpeed);
-    } else {
-      LanderArm.setPower(0);
+    LeftWheel.setPower(1);
+    RightWheel.setPower(1);
+    sleep(100);
 
-    }
-  }
+    LeftWheel.setPower(-1);
+    RightWheel.setPower(1);
+    sleep(200);
 
-  private void landerArm2() {
-    // Movement of lander arm 2
-    // Left analog stick y input
-    if (gamepad1.x) {
-      LanderArm2.setPower(-0.33 * armSpeed);
-    } else if (gamepad1.y) {
-      LanderArm2.setPower(0.2 * armSpeed);
-    } else {
-      LanderArm2.setPower(0);
-    }
-  }
+    LeftWheel.setPower(-1);
+    RightWheel.setPower(-1);
+    sleep(600);
 
-  private void move() {
-    // Movement of robot with wheels
-    // Left analog stick input
-    LeftWheel.setPower(gamepad1.left_stick_y * 0.5 * wheelSpeed - gamepad1.left_stick_x * 0.5 * wheelSpeed);
-    RightWheel.setPower(gamepad1.left_stick_y * 0.5 * wheelSpeed + gamepad1.left_stick_x * 0.5 * wheelSpeed);
-  }
+    LeftWheel.setPower(1);
+    RightWheel.setPower(-1);
+    sleep(350);
 
-  private void print() {
-    // Prints data for debug purposes
-    telemetry.addData("joystick", gamepad1.left_stick_x);
-    telemetry.addData("Left Wheel Power", LeftWheel.getPower());
-    telemetry.addData("Right Wheel Power", RightWheel.getPower());
-    telemetry.addData("Left Wheel Position", LeftWheel.getCurrentPosition());
-    telemetry.addData("Right Wheel Position", RightWheel.getCurrentPosition());
-    telemetry.update();
+    RightWheel.setPower(-1);
+    LeftWheel.setPower(-1);
+    sleep(1000);
+    RightWheel.setPower(0);
+    LeftWheel.setPower(0);
+
+    Succ.setPower(1);
+    sleep(1000);
+    Succ.setPower(0);
   }
 }
