@@ -148,7 +148,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.vuforiaLicenseKey = "AY4Pdeb/////AAABmeuDt5dlTEiMkbqvIwLznng+AUAT9IX6CRJMh4NUrPUHrGnnqKN/GPlBFovkf7g8cmW7QilNwBnEFw7lTgjqPLxcKgdK7hTxqzD7pMka50VQLDLMlZQxnlO8jcBmg2BtBuw4vGf6jnJNGjlKqMCtY3shK/uhQfRDhDJoFf81czzHo/S81R8B7lyvva5hDoQ0pUglGZ1x+t6s0+ezf4Au9cyBq2t/mAvb9iz7cL4LPl4xbIfspls8UO2Do3DaWoWg428dVDr9O3Ju2qLtsBp4AekVy43XTzjikmj43XwyY3ZoTo+6cC9i2g/xglkBdr/FljrWTsB8r1YPzXHXJEgSDEhAHjD8FMbJVGOplJm8ZEwx";
         parameters.cameraDirection   = CAMERA_CHOICE;
 
         //  Instantiate the Vuforia engine
@@ -325,6 +325,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
                     telemetry.addData("Visible Target", trackable.getName());
+                    telemetry.addData("Target Pos", trackable.getLocation() );
                     targetVisible = true;
 
                     // getUpdatedRobotLocation() will return null if no new information is available since
