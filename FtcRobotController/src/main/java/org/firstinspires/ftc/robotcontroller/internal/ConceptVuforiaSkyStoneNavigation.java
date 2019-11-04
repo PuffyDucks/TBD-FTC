@@ -133,6 +133,12 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     private OpenGLMatrix lastLocation = null;
     private VuforiaLocalizer vuforia = null;
     private boolean targetVisible = false;
+    float tx;
+    float ty;
+    float tz;
+    float rx;
+    float ry;
+    float rz;
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
@@ -148,7 +154,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.vuforiaLicenseKey = "AY4Pdeb/////AAABmeuDt5dlTEiMkbqvIwLznng+AUAT9IX6CRJMh4NUrPUHrGnnqKN/GPlBFovkf7g8cmW7QilNwBnEFw7lTgjqPLxcKgdK7hTxqzD7pMka50VQLDLMlZQxnlO8jcBmg2BtBuw4vGf6jnJNGjlKqMCtY3shK/uhQfRDhDJoFf81czzHo/S81R8B7lyvva5hDoQ0pUglGZ1x+t6s0+ezf4Au9cyBq2t/mAvb9iz7cL4LPl4xbIfspls8UO2Do3DaWoWg428dVDr9O3Ju2qLtsBp4AekVy43XTzjikmj43XwyY3ZoTo+6cC9i2g/xglkBdr/FljrWTsB8r1YPzXHXJEgSDEhAHjD8FMbJVGOplJm8ZEwx";
         parameters.cameraDirection   = CAMERA_CHOICE;
 
         //  Instantiate the Vuforia engine
@@ -324,7 +330,13 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                    tx = trackable.getLocation().get(0,3)/mmPerInch;
+                    ty = trackable.getLocation().get(1,3)/mmPerInch;
+                    tz = trackable.getLocation().get(2, 3) / mmPerInch;
                     telemetry.addData("Visible Target", trackable.getName());
+                    telemetry.addData("Target Pos", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                            tx, ty, tz);
+
                     targetVisible = true;
 
                     // getUpdatedRobotLocation() will return null if no new information is available since
@@ -341,8 +353,13 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
             if (targetVisible) {
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
+                rx = translation.get(0)/mmPerInch;
+                ry = translation.get(1)/mmPerInch;
+                rz = translation.get(2)/mmPerInch;
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                        translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+                        rx, ry, rz);
+                telemetry.addData("Delta Pos", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                        tx-rx,ty-ry,tz-rz);
 
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
