@@ -33,6 +33,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -42,8 +46,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -130,6 +133,10 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     private static final float quadField  = 36 * mmPerInch;
 
     // Class Members
+    private DcMotor LeftFront;
+    private DcMotor LeftBack;
+    private DcMotor RightFront;
+    private DcMotor RightBack;
     private OpenGLMatrix lastLocation = null;
     private VuforiaLocalizer vuforia = null;
     private boolean targetVisible = false;
@@ -139,6 +146,9 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     float rx;
     float ry;
     float rz;
+    float dx;
+    float dy;
+    float dz;
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
@@ -149,6 +159,19 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
+        LeftFront = hardwareMap.dcMotor.get("LeftFront");
+        LeftBack = hardwareMap.dcMotor.get("LeftBack");
+        RightFront = hardwareMap.dcMotor.get("RightFront");
+        RightBack = hardwareMap.dcMotor.get("RightBack");
+        waitForStart();
+        ((DcMotorEx) LeftFront).setMotorEnable();
+        ((DcMotorEx) LeftBack).setMotorEnable();
+        ((DcMotorEx) RightFront).setMotorEnable();
+        ((DcMotorEx) RightBack).setMotorEnable();
+        LeftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        LeftBack.setDirection(DcMotorSimple.Direction.FORWARD);
+        RightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        RightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -332,11 +355,10 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
                     tx = trackable.getLocation().get(0,3)/mmPerInch;
                     ty = trackable.getLocation().get(1,3)/mmPerInch;
-                    tz = trackable.getLocation().get(2, 3) / mmPerInch;
+                    tz = trackable.getLocation().get(2, 3) /mmPerInch;
                     telemetry.addData("Visible Target", trackable.getName());
                     telemetry.addData("Target Pos", "{X, Y, Z} = %.1f, %.1f, %.1f",
                             tx, ty, tz);
-
                     targetVisible = true;
 
                     // getUpdatedRobotLocation() will return null if no new information is available since
@@ -356,10 +378,14 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
                 rx = translation.get(0)/mmPerInch;
                 ry = translation.get(1)/mmPerInch;
                 rz = translation.get(2)/mmPerInch;
+                dx = tx-rx;
+                dy = ty-tz;
+                dz = tz-rz;
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         rx, ry, rz);
                 telemetry.addData("Delta Pos", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                        tx-rx,ty-ry,tz-rz);
+                        dx,dy, dz);
+
 
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
@@ -369,6 +395,20 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
                 telemetry.addData("Visible Target", "none");
             }
             telemetry.update();
+        }
+        boolean targetpos = false;
+        if(dx>10 && targetpos == false){
+            LeftFront.setPower(0.5);
+            RightBack.setPower(0.5);
+            LeftBack.setPower(-0.5);
+            RightFront.setPower(-0.5);
+        } else if (dx < 10 && targetpos == false){
+            LeftFront.setPower(-0.5);
+            RightBack.setPower(-0.5);
+            LeftBack.setPower(0.5);
+            RightFront.setPower(0.5);
+        } else{
+            targetpos = true;
         }
 
         // Disable Tracking when we are done;

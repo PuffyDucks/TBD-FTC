@@ -15,6 +15,8 @@ public class Driver extends LinearOpMode{
   private DcMotor RightBack;
   private DcMotor ClawArm;
   private DcMotor ClawArm2;
+  private DcMotor ClawArm3;
+
   /**
   * This function is executed when this Op Mode is selected from the Driver Station.
   */
@@ -25,8 +27,9 @@ public class Driver extends LinearOpMode{
     LeftBack = hardwareMap.dcMotor.get("LeftBack");
     RightFront = hardwareMap.dcMotor.get("RightFront");
     RightBack = hardwareMap.dcMotor.get("RightBack");
-    // ClawArm = hardwareMap.dcMotor.get("ClawArm");
-    // ClawArm2 = hardwareMap.dcMotor.get("ClawArm2");
+    ClawArm = hardwareMap.dcMotor.get("ClawArm");
+    ClawArm2 = hardwareMap.dcMotor.get("ClawArm2");
+    ClawArm3 = hardwareMap.dcMotor.get("ClawArm3");
 
     //these are functions below
     call();
@@ -63,30 +66,30 @@ public class Driver extends LinearOpMode{
   private void move() {
     // Movement of robot with wheels
     // Left analog stick input
-    LeftFront.setPower(gamepad1.left_stick_y * 0.5 - gamepad1.right_stick_x * 0.5);
-    LeftBack.setPower(gamepad1.left_stick_y * 0.5 - gamepad1.right_stick_x * 0.5);
-    RightFront.setPower(gamepad1.left_stick_y * 0.5 + gamepad1.right_stick_x * 0.5);
-    RightBack.setPower(gamepad1.left_stick_y * 0.5 + gamepad1.right_stick_x * 0.5);
-    
-    // if(gamepad1.a){
-    //   ClawArm.setPower(0.3);
-    // }
-    // else if(gamepad1.b){
-    //   ClawArm.setPower(-0.3);
-    // }
-    // else{
-    //   ClawArm.setPower(0);
-    // }
-    
-    // if(gamepad1.x){
-    //   ClawArm2.setPower(0.3);
-    // }
-    // else if(gamepad1.y){
-    //   ClawArm2.setPower(-0.3);
-    // }
-    // else{
-    //   ClawArm2.setPower(0);
-    // }
+    LeftFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x)*0.5);
+    LeftBack.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x)*0.5);
+    RightFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x)*0.5);
+    RightBack.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x)*0.5);
+
+     if(gamepad1.a){
+       ClawArm.setPower(0.3);
+     }
+     else if(gamepad1.b){
+       ClawArm.setPower(-0.3);
+     }
+     else{
+       ClawArm.setPower(0);
+     }
+
+     if(gamepad1.x){
+       ClawArm2.setPower(0.3);
+     }
+     else if(gamepad1.y){
+       ClawArm2.setPower(-0.3);
+     }
+     else{
+       ClawArm2.setPower(0);
+     }
   }
 
   private void print() {
