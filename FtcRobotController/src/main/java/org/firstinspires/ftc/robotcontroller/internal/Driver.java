@@ -35,7 +35,7 @@ public class Driver extends LinearOpMode{
     call();
     set();
 
-    while(opModeIsActive()){
+    while(opModeIsActive()) {
       //see below
       move();
       print();
@@ -66,30 +66,30 @@ public class Driver extends LinearOpMode{
   private void move() {
     // Movement of robot with wheels
     // Left analog stick input
-    LeftFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x)*0.5);
-    LeftBack.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x)*0.5);
-    RightFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x)*0.5);
-    RightBack.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x)*0.5);
+    LeftFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3);
+    LeftBack.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3);
+    RightFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3);
+    RightBack.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3);
 
-     if(gamepad1.a){
-       ClawArm.setPower(0.3);
-     }
-     else if(gamepad1.b){
-       ClawArm.setPower(-0.3);
-     }
-     else{
-       ClawArm.setPower(0);
-     }
+    if(gamepad1.a) {
+     ClawArm.setPower(0.3);
+    }
+    else if(gamepad1.b) {
+     ClawArm.setPower(-0.3);
+    }
+    else {
+     ClawArm.setPower(0);
+    }
 
-     if(gamepad1.x){
-       ClawArm2.setPower(0.3);
-     }
-     else if(gamepad1.y){
-       ClawArm2.setPower(-0.3);
-     }
-     else{
-       ClawArm2.setPower(0);
-     }
+    if(gamepad1.x) {
+     ClawArm2.setPower(0.3);
+    }
+    else if(gamepad1.y) {
+     ClawArm2.setPower(-0.3);
+    }
+    else {
+     ClawArm2.setPower(0);
+}
   }
 
   private void print() {
