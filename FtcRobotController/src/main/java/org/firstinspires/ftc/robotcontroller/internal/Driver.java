@@ -17,6 +17,10 @@ public class Driver extends LinearOpMode{
   private DcMotor ClawArm2;
   private DcMotor ClawArm3;
 
+  double leftFront = 1;
+  double rightFront = 1;
+  double leftBack = 1;
+  double rightBack = 1;
   /**
   * This function is executed when this Op Mode is selected from the Driver Station.
   */
@@ -38,6 +42,7 @@ public class Driver extends LinearOpMode{
     while(opModeIsActive()) {
       //see below
       move();
+      callibrate();
       print();
     }
   }
@@ -66,35 +71,53 @@ public class Driver extends LinearOpMode{
   private void move() {
     // Movement of robot with wheels
     // Left analog stick input
-    LeftFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3);
-    LeftBack.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3);
-    RightFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3);
-    RightBack.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3);
+    LeftFront.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3) * leftFront);
+    LeftBack.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3) * rightFront);
+    RightFront.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3) * leftBack);
+    RightBack.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3) * rightBack);
 
     if(gamepad1.a) {
-     ClawArm.setPower(0.3);
+      ClawArm.setPower(0.3);
     }
     else if(gamepad1.b) {
-     ClawArm.setPower(-0.3);
+      ClawArm.setPower(-0.3);
     }
     else {
-     ClawArm.setPower(0);
+      ClawArm.setPower(0);
     }
 
     if(gamepad1.x) {
-     ClawArm2.setPower(0.3);
+      ClawArm2.setPower(0.3);
     }
     else if(gamepad1.y) {
-     ClawArm2.setPower(-0.3);
+      ClawArm2.setPower(-0.3);
     }
     else {
-     ClawArm2.setPower(0);
-}
+      ClawArm2.setPower(0);
+    }
+  }
+
+  private void callibrate() {
+    if(gamepad2.a) {
+      leftBack =+ 0.001 * gamepad2.left_stick_x;
+    }
+    if(gamepad2.b) {
+      rightBack =+ 0.001 * gamepad2.left_stick_x;
+    }
+    if(gamepad2.x) {
+      rightFront =+ 0.001 * gamepad2.left_stick_x;
+    }
+    if(gamepad2.y) {
+      leftFront =+ 0.001 * gamepad2.left_stick_x;
+    }
   }
 
   private void print() {
     // Prints data for debug purposes
-    telemetry.addData("joystick1 x", gamepad1.left_stick_x);
+    telemetry.addData("leftFront", leftFront);
+    telemetry.addData("rightFront", rightFront);
+    telemetry.addData("leftBack", leftBack);
+    telemetry.addData("rightBack", rightBack);
     // telemetry.addData("Left Wheel Power", LeftWheel.getPower());
     // telemetry.addData("Right Wheel Power", RightWheel.getPower());
     //telemetry.addData("Left Wheel Position", LeftWheel.getCurrentPosition());
