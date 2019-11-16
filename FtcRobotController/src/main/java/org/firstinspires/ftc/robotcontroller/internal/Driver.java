@@ -99,16 +99,16 @@ public class Driver extends LinearOpMode{
 
   private void callibrate() {
     if(gamepad2.a) {
-      leftBack =+ 0.001 * gamepad2.left_stick_x;
+      leftBack += 0.001 * gamepad2.left_stick_x;
     }
     if(gamepad2.b) {
-      rightBack =+ 0.001 * gamepad2.left_stick_x;
+      rightBack += 0.001 * gamepad2.left_stick_x;
     }
     if(gamepad2.x) {
-      rightFront =+ 0.001 * gamepad2.left_stick_x;
+      rightFront += 0.001 * gamepad2.left_stick_x;
     }
     if(gamepad2.y) {
-      leftFront =+ 0.001 * gamepad2.left_stick_x;
+      leftFront += 0.001 * gamepad2.left_stick_x;
     }
   }
 
