@@ -83,7 +83,7 @@ public class ConceptScanServo extends LinearOpMode {
             if (rampUp) {
                 // Keep stepping up until we hit the max value.
                 position += INCREMENT ;
-                if (position >= MAX_POS ) {
+                    if (position >= MAX_POS ) {
                     position = MAX_POS;
                     rampUp = !rampUp;   // Switch ramp direction
                 }
