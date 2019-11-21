@@ -15,7 +15,6 @@ public class Driver extends LinearOpMode{
   private DcMotor RightBack;
   private DcMotor ClawArm;
   private DcMotor ClawArm2;
-  private DcMotor ClawArm3;
   private Servo servo;
   private Servo servo2;
 
@@ -37,7 +36,6 @@ public class Driver extends LinearOpMode{
     RightBack = hardwareMap.dcMotor.get("RightBack");
     ClawArm = hardwareMap.dcMotor.get("ClawArm");
     ClawArm2 = hardwareMap.dcMotor.get("ClawArm2");
-    ClawArm3 = hardwareMap.dcMotor.get("ClawArm3");
     servo = hardwareMap.get(Servo.class, "Grab");
     servo2 = hardwareMap.get(Servo.class, "Grab2");
 
@@ -62,7 +60,6 @@ public class Driver extends LinearOpMode{
     ((DcMotorEx) RightBack).setMotorEnable();
     ((DcMotorEx) ClawArm).setMotorEnable();
     ((DcMotorEx) ClawArm2).setMotorEnable();
-    ((DcMotorEx) ClawArm3).setMotorEnable();
   }
 
   private void set() {
@@ -73,7 +70,6 @@ public class Driver extends LinearOpMode{
     RightBack.setDirection(DcMotorSimple.Direction.REVERSE);
     ClawArm.setDirection(DcMotorSimple.Direction.FORWARD);
     ClawArm2.setDirection(DcMotorSimple.Direction.FORWARD);
-    ClawArm3.setDirection(DcMotorSimple.Direction.FORWARD);
   }
 
   private void move() {
@@ -112,8 +108,8 @@ public class Driver extends LinearOpMode{
       ClawArm2.setPower(-0.05);
     }
     if(gamepad1.left_trigger > 0.5){
-        servo.setPosition(1);
-        servo2.setPosition(0);
+      servo.setPosition(1);
+      servo2.setPosition(0);
     } else {
       servo.setPosition(0);
       servo2.setPosition(0.8);
