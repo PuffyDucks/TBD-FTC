@@ -15,14 +15,13 @@ public class Driver extends LinearOpMode{
   private DcMotor RightBack;
   private DcMotor ClawArm;
   private DcMotor ClawArm2;
-  private DcMotor ClawArm3;
   private Servo servo;
   private Servo servo2;
 
-double leftFront = 1;
-double rightFront = 1;
-double leftBack = 1;
-double rightBack = 1;
+  double leftFront = 1;
+  double rightFront = 1;
+  double leftBack = 1;
+  double rightBack = 1;
 
   private double multiplier = 1;
 
@@ -114,17 +113,17 @@ double rightBack = 1;
 
     //controls whole arm movement up and down
     if(gamepad1.x) {
-      ClawArm2.setPower(0.3);
-    }
-    else if(gamepad1.y) {
-      ClawArm2.setPower(-0.3);
+      ClawArm2.setPower(0.35 * multiplier);
+      //moves the whole arm up and down
+    } else if(gamepad1.y) {
+      ClawArm2.setPower(-0.35 * multiplier);
     }
     else {
       ClawArm2.setPower(-0.05);
     }
     if(gamepad1.left_trigger > 0.5){
-        servo.setPosition(0.5);
-        servo2.setPosition(0.3);
+      servo.setPosition(1);
+      servo2.setPosition(0);
     } else {
       servo.setPosition(0);
       servo2.setPosition(0.8);
