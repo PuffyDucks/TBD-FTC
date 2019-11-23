@@ -18,7 +18,8 @@ public class Driver extends LinearOpMode{
   private Servo servo;
   private Servo servo2;
 
-  private float multiplier = 1;
+  private float multiplierWheels = 1;
+  private float multiplierArm = 1;
 
   private double leftFront = 1;
   private double rightFront = 1;
@@ -80,18 +81,26 @@ public class Driver extends LinearOpMode{
     RightFront.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3) * leftBack);
     RightBack.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3) * rightBack);
 
-    //multiplier for arm strength
+    //multiplier for wheel speed
     if(gamepad1.right_trigger>0.5) {
-      multiplier = 2;
+      multiplierWheels = 2;
     } else {
-      multiplier = 1;
+      multiplierWheels = 1;
     }
+
+    //multiplier for arm speed
+    if(gamepad1.right_trigger>0.5) {
+      multiplierArm = 2;
+    } else {
+      multiplierArm = 1;
+    }
+
     //lift control
     if(gamepad1.a) {
-      ClawArm.setPower(0.3*multiplier);
+      ClawArm.setPower(0.3*multiplierArm);
     }
     else if(gamepad1.b) {
-      ClawArm.setPower(-0.3*multiplier);
+      ClawArm.setPower(-0.3*multiplierArm);
     }
     else {
       ClawArm.setPower(0);
@@ -99,10 +108,10 @@ public class Driver extends LinearOpMode{
 
     //controls whole arm movement up and down
     if(gamepad1.x) {
-      ClawArm2.setPower(0.35 * multiplier);
+      ClawArm2.setPower(0.35 * multiplierArm);
       //moves the whole arm up and down
     } else if(gamepad1.y) {
-      ClawArm2.setPower(-0.35 * multiplier);
+      ClawArm2.setPower(-0.35 * multiplierArm);
     }
     else {
       ClawArm2.setPower(-0.05);

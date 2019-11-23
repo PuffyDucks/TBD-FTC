@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 @Autonomous(name = "AutoFoundationMove", group = "")
-  public class AutoFoundationMove extends LinearOpMode {
+  public class AutoFoundationMove extends runOpMode {
     private DcMotor LeftFront;
     private DcMotor LeftBack;
     private DcMotor RightFront;
