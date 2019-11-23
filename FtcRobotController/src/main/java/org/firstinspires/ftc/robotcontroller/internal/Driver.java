@@ -121,8 +121,8 @@ public class Driver extends LinearOpMode{
       ClawArm2.setPower(-0.05);
     }
     if(gamepad1.left_trigger > 0.5){
-      servo.setPosition(0.7);
-      servo2.setPosition(0.3);
+      servo.setPosition(0.4);
+      servo2.setPosition(0.4);
     } else {
       servo.setPosition(0);
       servo2.setPosition(0.8);
