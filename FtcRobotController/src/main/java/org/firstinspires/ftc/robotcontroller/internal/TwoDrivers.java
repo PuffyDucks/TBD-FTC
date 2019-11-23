@@ -97,17 +97,17 @@ public class Driver extends LinearOpMode{
     }
 
     //multiplier for arm speed
-    if(gamepad1.right_trigger>0.5) {
+    if(gamepad2.right_trigger>0.5) {
       multiplierArm = 2;
     } else {
       multiplierArm = 1;
     }
 
     //lift control
-    if(gamepad1.a) {
+    if(gamepad2.a) {
       ClawArm.setPower(0.6*multiplierArm);
     }
-    else if(gamepad1.b) {
+    else if(gamepad2.b) {
       ClawArm.setPower(-0.6*multiplierArm);
     }
     else {
@@ -115,18 +115,18 @@ public class Driver extends LinearOpMode{
     }
 
     //controls whole arm movement up and down
-    if(gamepad1.x) {
+    if(gamepad2.x) {
       ClawArm2.setPower(0.35 * multiplierArm);
       //moves the whole arm up and down
-    } else if(gamepad1.y) {
+    } else if(gamepad2.y) {
       ClawArm2.setPower(-0.35 * multiplierArm);
     }
     else {
       ClawArm2.setPower(-0.05);
     }
-    if(gamepad1.left_trigger > 0.5){
-      servo.setPosition(0.4);
-      servo2.setPosition(0.4);
+    if(gamepad2.left_trigger > 0.5){
+      servo.setPosition(0.7);
+      servo2.setPosition(0.3);
     } else {
       servo.setPosition(0);
       servo2.setPosition(0.8);
