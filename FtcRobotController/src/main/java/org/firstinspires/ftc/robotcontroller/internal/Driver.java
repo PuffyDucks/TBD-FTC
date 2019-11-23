@@ -60,7 +60,6 @@ public class Driver extends LinearOpMode{
     while(opModeIsActive()) {
       //see below
       move();
-      callibrate();
       print();
     }
   }
@@ -89,10 +88,10 @@ public class Driver extends LinearOpMode{
   private void move() {
     // Movement of robot with wheels
     // Left analog stick input
-    LeftFront.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3) * leftFront * multiplier);
-    LeftBack.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3) * rightFront * multiplier);
-    RightFront.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3) * leftBack * multiplier);
-    RightBack.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3) * rightBack * multiplier);
+    LeftFront.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3) * leftFront * multiplier);
+    LeftBack.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3) * rightFront * multiplier);
+    RightFront.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3) * leftBack * multiplier);
+    RightBack.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3) * rightBack * multiplier);
 
     //multiplier for arm strength
     if(gamepad1.right_trigger>0.5) {
@@ -122,8 +121,8 @@ public class Driver extends LinearOpMode{
       ClawArm2.setPower(-0.05);
     }
     if(gamepad1.left_trigger > 0.5){
-      servo.setPosition(1);
-      servo2.setPosition(0);
+      servo.setPosition(0.7);
+      servo2.setPosition(0.3);
     } else {
       servo.setPosition(0);
       servo2.setPosition(0.8);
@@ -137,10 +136,10 @@ public class Driver extends LinearOpMode{
     telemetry.addData("Encode RF", RightFront.getCurrentPosition());
     telemetry.addData("Encode RB", RightBack.getCurrentPosition());
 
-    telemetry.addData("LB", LeftBack.getPower());
-    telemetry.addData("RB", RightBack.getPower());
     telemetry.addData("LF", LeftFront.getPower());
     telemetry.addData("RF", RightFront.getPower());
+    telemetry.addData("LB", LeftBack.getPower());
+    telemetry.addData("RB", RightBack.getPower());
     telemetry.addData("leftFront", rightFront);
     telemetry.addData("rightBack", leftBack);
     telemetry.addData("rightFront", rightBack);
