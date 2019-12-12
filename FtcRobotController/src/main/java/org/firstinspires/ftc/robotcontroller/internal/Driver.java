@@ -77,8 +77,6 @@ public class Driver extends LinearOpMode{
     LeftBack.setDirection(DcMotorSimple.Direction.FORWARD);
     RightFront.setDirection(DcMotorSimple.Direction.REVERSE);
     RightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-    ClawArm.setDirection(DcMotorSimple.Direction.FORWARD);
-    ClawArm2.setDirection(DcMotorSimple.Direction.FORWARD);
   }
 
   private void move() {
