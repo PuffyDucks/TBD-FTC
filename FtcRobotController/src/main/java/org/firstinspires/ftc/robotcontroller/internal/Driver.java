@@ -84,10 +84,10 @@ public class Driver extends LinearOpMode{
   private void move() {
     // Movement of robot with wheels
     // Left analog stick input
-    LeftFront.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3));
-    LeftBack.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3));
-    RightFront.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3));
-    RightBack.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3));
+    LeftFront.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3)*multiplierWheels);
+    LeftBack.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3)*multiplierWheels);
+    RightFront.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3)*multiplierWheels);
+    RightBack.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3)*multiplierWheels);
 
     //multiplier for wheel speed
     if(gamepad1.right_trigger>0.5) {
@@ -125,8 +125,8 @@ public class Driver extends LinearOpMode{
       ClawArm2.setPower(-0.05);
     }
     if(gamepad1.left_trigger > 0.5){
-      servo.setPosition(0.4);
-      servo2.setPosition(0.4);
+      servo.setPosition(0.5);
+      servo2.setPosition(0.3);
     } else {
       servo.setPosition(0);
       servo2.setPosition(0.8);
@@ -144,10 +144,6 @@ public class Driver extends LinearOpMode{
     telemetry.addData("RF", RightFront.getPower());
     telemetry.addData("LB", LeftBack.getPower());
     telemetry.addData("RB", RightBack.getPower());
-    telemetry.addData("leftFront", rightFront);
-    telemetry.addData("rightBack", leftBack);
-    telemetry.addData("rightFront", rightBack);
-    telemetry.addData("leftBack", leftFront);
 //     telemetry.addData("Left Wheel Power", LeftWheel.getPower());
 //     telemetry.addData("Right Wheel Power", RightWheel.getPower());
 //    telemetry.addData("Left Wheel Position", LeftWheel.getCurrentPosition());

@@ -45,8 +45,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -317,7 +316,7 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
     //
     // The phone starts out lying flat, with the screen facing Up and with the physical top of the phone
     // pointing to the LEFT side of the Robot.
-    // The two examples below assume that the camera is facing forward out the front of the robot.
+    // The two exaMmples below assume that the camera is facing forward out the front of the robot.
 
     // We need to rotate the camera around it's long axis to bring the correct camera forward.
     if (CAMERA_CHOICE == BACK) {
@@ -327,13 +326,16 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
     }
 
     // Rotate the phone vertical about the X axis if it's in portrait mode
-    phoneXRotate = 180 ;
+    if (PHONE_IS_PORTRAIT) {
+      phoneXRotate = 90;
+    }
+    phoneXRotate = 180;
 
     // Next, translate the camera lens to where it is on the robot.
     // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
     final float CAMERA_FORWARD_DISPLACEMENT  = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
     final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
-    final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
+    final float CAMERA_LEFT_DISPLACEMENT     = 2.0f * mmPerInch;     // eg: Camera is ON the robot's center line
 
     OpenGLMatrix robotFromCamera = OpenGLMatrix
             .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
@@ -351,7 +353,7 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
     // To restore the normal opmode structure, just un-comment the following line:
     targetsSkyStone.activate();
     //waitForStart();
-    move((float) -1, 0, 0, (long) 2);
+    move((float) -1, 0, 0, (long) 1.8);
     while (!vuf(targetVisible, allTrackables, lastLocation) && opModeIsActive()) {
     }
     finetune(targetVisible, allTrackables, lastLocation);
@@ -359,6 +361,8 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
     //line
     arm(-0.5f,1);
     //move forward
+    servo.setPosition(0);
+    servo.setPosition(1);
     move( -0.5f,0,0, (long) 2);
     //servo's out
     intake(false,1);
@@ -368,7 +372,7 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
     sleep(100);
     //backwards
     move(0.5f,0,0,4);
-    move(0,0,1, (long) 4);
+    move(0,0,-1, (long) 4);
     move(-1,0,0,5);
 
     // Note: To use the remote camera preview:
@@ -422,18 +426,41 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
       // express the rotation of the robot in degrees.
       Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
       telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+      telemetry.addData("rx",rx);
       telemetry.update();
       return true;
     }
     else {
-      moveAlt(0, (float) 0.6,0, (long) 0.1);
+      checkOp();
+      moveAlt(0, (float) 0.6,-0.05f, (long) 0.1);
       return false;
     }
   }
 
 
   private void finetune(boolean targetVisible, List<VuforiaTrackable> allTrackables, OpenGLMatrix lastLocation){
-    while(opModeIsActive() && 8<rx && 6>rx) {
+    double min=-13;
+    double max=-12;
+    while(opModeIsActive() && max<rx || min>rx) {
+      for (VuforiaTrackable trackable : allTrackables) {
+        if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+          tx = trackable.getLocation().get(0,3)/mmPerInch;
+          ty = trackable.getLocation().get(1,3)/mmPerInch;
+          tz = trackable.getLocation().get(2, 3) /mmPerInch;
+          telemetry.addData("Visible Target", trackable.getName());
+          telemetry.addData("Target Pos", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                  tx, ty, tz);
+          targetVisible = true;
+
+          // getUpdatedRobotLocation() will return null if no new information is available since
+          // the last time that call was made, or if the trackable is not currently visible.
+          OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+          if (robotLocationTransform != null) {
+            lastLocation = robotLocationTransform;
+          }
+          break;
+        }
+      }
       if (targetVisible) {
         // express position (translation) of robot in inches.
         VectorF translation = lastLocation.getTranslation();
@@ -451,18 +478,19 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
         // express the rotation of the robot in degrees.
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-        telemetry.update();
+        telemetry.addData("rx",rx);
       }
-      if (rx < 8 || rx > 6 && opModeIsActive()) {
-        if (rx > 8) {
+      if (rx < max || rx > min && opModeIsActive()) {
+        if (rx > max) {
           moveAlt(0, -0.5f, 0, (long) 0.1);
-        } else if (rx < 6) {
+        } else if (rx < min) {
           moveAlt(0, 0.5f, 0, (long) 0.1);
         }
       }
       else{
         stopMotor();
       }
+      telemetry.update();
     }
   }
 
@@ -492,12 +520,12 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
     LeftBack.setPower(((y + x) * 0.5 - rotation * 0.3) * rightFront);
     RightFront.setPower(((y + x) * 0.5 + rotation * 0.3) * leftBack);
     RightBack.setPower(((y - x) * 0.5 + rotation * 0.3) * rightBack);
-    telemetry.addData("LF", LeftFront.getPower());
-    telemetry.addData("RF", RightFront.getPower());
-    telemetry.addData("LB", LeftBack.getPower());
-    telemetry.addData("RB", RightBack.getPower());
-    telemetry.addData("Duration", duration);
-    //telemetry.update();
+//    telemetry.addData("LF", LeftFront.getPower());
+//    telemetry.addData("RF", RightFront.getPower());
+//    telemetry.addData("LB", LeftBack.getPower());
+//    telemetry.addData("RB", RightBack.getPower());
+//    telemetry.addData("Duration", duration);
+//    telemetry.update();
     sleep(duration*1000);
 //    LeftFront.setPower(0);
 //    LeftBack.setPower(0);
@@ -551,6 +579,8 @@ public class SkyStoneNavigationRightBlue extends LinearOpMode {
       LeftBack.setPower(0);
       RightBack.setPower(0);
       RightFront.setPower(0);
+      ClawArm.setPower(0);
+      ClawArm2.setPower(0);
       stop();
     }
   }

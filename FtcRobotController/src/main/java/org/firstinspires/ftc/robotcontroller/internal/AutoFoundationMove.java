@@ -60,17 +60,20 @@ public class AutoFoundationMove extends LinearOpMode {
     call();
     set();
     waitForStart();
-
-    move(-1, 0, 0, 1);
+    move(-1, 0, 0, 5);
     //Moves the main arm up from a resting position
+    //checkOp();
     arm((float) -0.5,1);
-    move(1,0,0,1);
+    //checkOp();
+    arm((float) -0.1, (long) 0.5);
+    //checkOp();
+    move((float) 0.3,0,0,4);
     print();
   }
 
   private void call() {
     // Call program, and devices
-    waitForStart();
+    //waitForStart();
     ((DcMotorEx) LeftFront).setMotorEnable();
     ((DcMotorEx) LeftBack).setMotorEnable();
     ((DcMotorEx) RightFront).setMotorEnable();
@@ -92,6 +95,7 @@ public class AutoFoundationMove extends LinearOpMode {
   // Moves robot
   //xy plane is centered on robot with arm facing forwards
   private void move(float y, float x, float rotation, long duration) {
+    checkOp();
     LeftFront.setPower((y - x) * 0.5 - rotation * 0.3);
     LeftBack.setPower((y + x) * 0.5 - rotation * 0.3);
     RightFront.setPower((y + x) * 0.5 + rotation * 0.3);
@@ -113,6 +117,7 @@ public class AutoFoundationMove extends LinearOpMode {
   //pos is down on flip power
   //neg is up
   private void arm(float power, long duration) {
+    checkOp();
     ClawArm2.setPower(power);
     telemetry.addData("ArmMove", ClawArm.getPower());
     telemetry.addData("duration", duration);
@@ -122,6 +127,7 @@ public class AutoFoundationMove extends LinearOpMode {
   // Moves claw's height
   //pos is up on vert power
   private void intakeV(float power, long duration) {
+    checkOp();
     ClawArm.setPower(power);
     telemetry.addData("Intake", ClawArm2.getPower());
     telemetry.addData("Duration", duration);
@@ -130,6 +136,7 @@ public class AutoFoundationMove extends LinearOpMode {
 
   // Toggles servos
   private void intake(boolean power, long delay) {
+    checkOp();
     if(power == true){
       servo.setPosition(1);
       servo2.setPosition(0);
@@ -144,5 +151,16 @@ public class AutoFoundationMove extends LinearOpMode {
   private void print() {
     // Prints data for debug purposes
     telemetry.update();
+  }
+  private void checkOp(){
+    if(!opModeIsActive()){
+      LeftFront.setPower(0);
+      LeftBack.setPower(0);
+      RightBack.setPower(0);
+      RightFront.setPower(0);
+      ClawArm.setPower(0);
+      ClawArm2.setPower(0);
+      stop();
+    }
   }
 }
