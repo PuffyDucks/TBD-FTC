@@ -13,13 +13,12 @@ public class Driver extends LinearOpMode{
   private DcMotor LeftBack;
   private DcMotor RightFront;
   private DcMotor RightBack;
-  private DcMotor ClawArm;
-  private DcMotor ClawArm2;
-  private Servo servo;
-  private Servo servo2;
 
   private float multiplierWheels = 1;
   private float multiplierArm = 1;
+
+  private DcMotor ArmMotor;
+  private Servo ArmServo;
 
   /**
   * This function is executed when this Op Mode is selected from the Driver Station.
@@ -32,10 +31,9 @@ public class Driver extends LinearOpMode{
     LeftBack = hardwareMap.dcMotor.get("LeftBack");
     RightFront = hardwareMap.dcMotor.get("RightFront");
     RightBack = hardwareMap.dcMotor.get("RightBack");
-    ClawArm = hardwareMap.dcMotor.get("ClawArm");
-    ClawArm2 = hardwareMap.dcMotor.get("ClawArm2");
-    servo = hardwareMap.get(Servo.class, "Grab");
-    servo2 = hardwareMap.get(Servo.class, "Grab2");
+
+    ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
+    ArmServo = hardwareMap.servo.get("ArmServo");
 
 //    //set encoder modes
 //    LeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -67,16 +65,16 @@ public class Driver extends LinearOpMode{
     ((DcMotorEx) LeftBack).setMotorEnable();
     ((DcMotorEx) RightFront).setMotorEnable();
     ((DcMotorEx) RightBack).setMotorEnable();
-    ((DcMotorEx) ClawArm).setMotorEnable();
-    ((DcMotorEx) ClawArm2).setMotorEnable();
+    ((DcMotorEx) ArmMotor).setMotorEnable();
   }
 
   private void set() {
     // Set direction of devices
-    LeftFront.setDirection(DcMotorSimple.Direction.FORWARD);
-    LeftBack.setDirection(DcMotorSimple.Direction.FORWARD);
-    RightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-    RightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+    LeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    LeftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+    RightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+    RightBack.setDirection(DcMotorSimple.Direction.FORWARD);
+    ArmMotor.setDirection(DcMotorSimple.Direction.FORWARD);
   }
 
   private void move() {
@@ -102,32 +100,20 @@ public class Driver extends LinearOpMode{
     }
 
     //lift control
-    if(gamepad1.a) {
-      ClawArm.setPower(0.6*multiplierArm);
+    if(gamepad1.a){
+      ArmMotor.setPower(0.5);
     }
-    else if(gamepad1.b) {
-      ClawArm.setPower(-0.6*multiplierArm);
+    else if(gamepad1.b){
+      ArmMotor.setPower(-0.5);
     }
     else {
-      ClawArm.setPower(0);
+      ArmMotor.setPower(0);
     }
 
-    //controls whole arm movement up and down
-    if(gamepad1.x) {
-      ClawArm2.setPower(0.35 * multiplierArm);
-      //moves the whole arm up and down
-    } else if(gamepad1.y) {
-      ClawArm2.setPower(-0.35 * multiplierArm);
-    }
-    else {
-      ClawArm2.setPower(-0.05);
-    }
-    if(gamepad1.left_trigger > 0.5){
-      servo.setPosition(0.5);
-      servo2.setPosition(0.3);
+    if(gamepad1.right_trigger>0.5) {
+      ArmServo.setPosition(1);
     } else {
-      servo.setPosition(0);
-      servo2.setPosition(0.8);
+      ArmServo.setPosition(0);
     }
   }
 
