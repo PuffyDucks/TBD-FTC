@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.robotcontroller.internal;
-
+import  java.lang.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,9 +13,17 @@ public class Driver extends LinearOpMode{
   private DcMotor LeftBack;
   private DcMotor RightFront;
   private DcMotor RightBack;
-
+  boolean toggleServo = false;
   private float multiplierWheels = 1;
+  private float multiplierTurn = 1;
   private float multiplierArm = 1;
+  long i=System.currentTimeMillis();
+  private float magnitude;
+  private float highest;
+  private float reduction;
+
+  private float wheelSetA;
+  private float wheelSetB;
 
   private DcMotor ArmMotor;
   private Servo ArmServo;
@@ -70,33 +78,44 @@ public class Driver extends LinearOpMode{
 
   private void set() {
     // Set direction of devices
-    LeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-    LeftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-    RightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-    RightBack.setDirection(DcMotorSimple.Direction.FORWARD);
+    LeftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+    LeftBack.setDirection(DcMotorSimple.Direction.FORWARD);
+    RightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    RightBack.setDirection(DcMotorSimple.Direction.REVERSE);
     ArmMotor.setDirection(DcMotorSimple.Direction.FORWARD);
   }
 
   private void move() {
     // Movement of robot with wheels
     // Left analog stick input
-    LeftFront.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3)*multiplierWheels);
-    LeftBack.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3)*multiplierWheels);
-    RightFront.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3)*multiplierWheels);
-    RightBack.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3)*multiplierWheels);
+
+    magnitude = (float) Math.sqrt(Math.pow(gamepad1.left_stick_y, 2) + Math.pow(gamepad1.left_stick_x, 2));
+    highest = Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x);
+
+    if (highest == 0) {
+      highest = 1;
+    }
+
+    wheelSetA = (gamepad1.left_stick_y - gamepad1.left_stick_x) * (1 - gamepad1.right_stick_x * multiplierTurn) * magnitude / highest;
+    wheelSetB = (gamepad1.left_stick_y + gamepad1.left_stick_x) * (1 - gamepad1.right_stick_x * multiplierTurn) * magnitude / highest;
+
+    LeftFront.setPower((wheelSetA + gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
+    LeftBack.setPower((wheelSetB + gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
+    RightFront.setPower((wheelSetB - gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
+    RightBack.setPower((wheelSetA - gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
 
     //multiplier for wheel speed
-    if(gamepad1.right_trigger>0.5) {
-      multiplierWheels = 2;
+    if(gamepad1.left_trigger > 0.5) {
+      multiplierWheels = 0.6f;
     } else {
-      multiplierWheels = 1;
+      multiplierWheels = (float) 0.2;
     }
 
     //multiplier for arm speed
-    if(gamepad1.right_trigger>0.5) {
-      multiplierArm = 2;
+    if(gamepad1.right_trigger > 0.5) {
+      multiplierTurn = 0.6f;
     } else {
-      multiplierArm = 1;
+      multiplierTurn = (float) 0.2;
     }
 
     //lift control
@@ -106,29 +125,24 @@ public class Driver extends LinearOpMode{
     else if(gamepad1.b){
       ArmMotor.setPower(-0.5);
     }
-    else {
+    else{
       ArmMotor.setPower(0);
     }
-
-    if(gamepad1.right_trigger>0.5) {
+    if(gamepad1.left_bumper && System.currentTimeMillis()-i>1000){
+      toggleServo = !toggleServo;
+      i=System.currentTimeMillis();
+    }
+    if(toggleServo) {
+      ArmServo.setPosition(0.2);
+    }
+    else{
       ArmServo.setPosition(1);
-    } else {
-      ArmServo.setPosition(0);
     }
   }
 
   private void print() {
     // Prints data for debug purposes
-    telemetry.addData("Encode LB", LeftBack.getCurrentPosition());
-    telemetry.addData("Encode LF", LeftFront.getCurrentPosition());
-    telemetry.addData("Encode RF", RightFront.getCurrentPosition());
-    telemetry.addData("Encode RB", RightBack.getCurrentPosition());
-
-    telemetry.addData("LF", LeftFront.getPower());
-    telemetry.addData("RF", RightFront.getPower());
-    telemetry.addData("LB", LeftBack.getPower());
-    telemetry.addData("RB", RightBack.getPower());
-//     telemetry.addData("Left Wheel Power", LeftWheel.getPower());
+     telemetry.addData("nae nae", gamepad1.right_stick_x);
 //     telemetry.addData("Right Wheel Power", RightWheel.getPower());
 //    telemetry.addData("Left Wheel Position", LeftWheel.getCurrentPosition());
 //    telemetry.addData("Right Wheel Position", RightWheel.getCurrentPosition());
