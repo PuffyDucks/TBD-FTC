@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.robotcontroller.internal;
 import  java.lang.*;
+
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,20 +16,21 @@ public class Driver extends LinearOpMode{
   private DcMotor RightFront;
   private DcMotor RightBack;
   boolean toggleServo = false;
-  private float multiplierWheels = 1;
-  private float multiplierTurn = 1;
-  private float multiplierArm = 1;
-  long i=System.currentTimeMillis();
-  private float magnitude;
-  private float highest;
-  private float reduction;
+  private double multiplierWheels = 1;
+  private double multiplierTurn = 1;
+  private double multiplierArm = 1;
+  private ColorSensor colorFront;
+  private ColorSensor colorBottom;
+  private double magnitude;
+  private double highest;
 
-  private float wheelSetA;
-  private float wheelSetB;
+  private double wheelSetA;
+  private double wheelSetB;
 
   private DcMotor ArmMotor;
   private Servo ArmServo;
 
+  long i = System.currentTimeMillis();
   /**
   * This function is executed when this Op Mode is selected from the Driver Station.
   */
@@ -39,7 +42,8 @@ public class Driver extends LinearOpMode{
     LeftBack = hardwareMap.dcMotor.get("LeftBack");
     RightFront = hardwareMap.dcMotor.get("RightFront");
     RightBack = hardwareMap.dcMotor.get("RightBack");
-
+    colorFront = hardwareMap.colorSensor.get("colorFront");
+    colorBottom = hardwareMap.colorSensor.get("colorBottom");
     ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
     ArmServo = hardwareMap.servo.get("ArmServo");
 
@@ -89,7 +93,7 @@ public class Driver extends LinearOpMode{
     // Movement of robot with wheels
     // Left analog stick input
 
-    magnitude = (float) Math.sqrt(Math.pow(gamepad1.left_stick_y, 2) + Math.pow(gamepad1.left_stick_x, 2));
+    magnitude = Math.sqrt(Math.pow(gamepad1.left_stick_y, 2) + Math.pow(gamepad1.left_stick_x, 2));
     highest = Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x);
 
     if (highest == 0) {
@@ -106,16 +110,16 @@ public class Driver extends LinearOpMode{
 
     //multiplier for wheel speed
     if(gamepad1.left_trigger > 0.5) {
-      multiplierWheels = 0.6f;
+      multiplierWheels = 0.8;
     } else {
-      multiplierWheels = (float) 0.2;
+      multiplierWheels = 0.4;
     }
 
     //multiplier for arm speed
     if(gamepad1.right_trigger > 0.5) {
-      multiplierTurn = 0.6f;
+      multiplierTurn = 1;
     } else {
-      multiplierTurn = (float) 0.2;
+      multiplierTurn = 0.6;
     }
 
     //lift control
@@ -130,7 +134,7 @@ public class Driver extends LinearOpMode{
     }
     if(gamepad1.left_bumper && System.currentTimeMillis()-i>1000){
       toggleServo = !toggleServo;
-      i=System.currentTimeMillis();
+      i = System.currentTimeMillis();
     }
     if(toggleServo) {
       ArmServo.setPosition(0.2);
@@ -142,13 +146,11 @@ public class Driver extends LinearOpMode{
 
   private void print() {
     // Prints data for debug purposes
-     telemetry.addData("nae nae", gamepad1.right_stick_x);
-//     telemetry.addData("Right Wheel Power", RightWheel.getPower());
-//    telemetry.addData("Left Wheel Position", LeftWheel.getCurrentPosition());
-//    telemetry.addData("Right Wheel Position", RightWheel.getCurrentPosition());
-//    telemetry.addData("GamePad2 Left Stick Y", gamepad2.left_stick_y);
-//    telemetry.addData("Claw 1 Power", ClawArm.getPower());
-//    telemetry.addData("Claw 2 Power", ClawArm2.getPower());
+    // telemetry.addData("GamePad2 Left Stick Y", gamepad2.left_stick_y);
+    telemetry.addData("colorBottom blue", colorBottom.blue());
+    telemetry.addData("colorFront Red", colorFront.red());
+    telemetry.addData("colorFront Green", colorFront.green());
+    telemetry.addData("colorFront Blue", colorFront.blue());
     telemetry.update();
   }
 }
