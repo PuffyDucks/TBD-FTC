@@ -82,10 +82,10 @@ public class Driver extends LinearOpMode{
 
   private void set() {
     // Set direction of devices
-    LeftFront.setDirection(DcMotorSimple.Direction.FORWARD);
-    LeftBack.setDirection(DcMotorSimple.Direction.FORWARD);
-    RightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-    RightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+    LeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    LeftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+    RightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+    RightBack.setDirection(DcMotorSimple.Direction.FORWARD);
     ArmMotor.setDirection(DcMotorSimple.Direction.FORWARD);
   }
 
@@ -124,10 +124,10 @@ public class Driver extends LinearOpMode{
 
     //lift control
     if(gamepad1.a){
-      ArmMotor.setPower(0.5);
+      ArmMotor.setPower(0.3);
     }
     else if(gamepad1.b){
-      ArmMotor.setPower(-0.5);
+      ArmMotor.setPower(-0.3);
     }
     else{
       ArmMotor.setPower(0);

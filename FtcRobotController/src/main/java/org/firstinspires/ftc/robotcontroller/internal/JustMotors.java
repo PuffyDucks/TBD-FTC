@@ -70,7 +70,7 @@ public class JustMotors extends LinearOpMode{
   private void move() {
     // Movement of robot with wheels
     // Left analog stick input
-    LeftFront.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3)*multiplierWheels);
+    /*LeftFront.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3)*multiplierWheels);
     LeftBack.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 - gamepad1.right_stick_x * 0.3)*multiplierWheels);
     RightFront.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3)*multiplierWheels);
     RightBack.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.5 + gamepad1.right_stick_x * 0.3)*multiplierWheels);
@@ -78,6 +78,24 @@ public class JustMotors extends LinearOpMode{
       multiplierWheels = 2;
     } else {
       multiplierWheels = 1;
+    }*/
+    if(gamepad1.x){
+      LeftFront.setPower(0.2);
+    }
+    else if(gamepad1.y){
+      RightFront.setPower(0.2);
+    }
+    else if(gamepad1.b){
+      RightBack.setPower(0.2);
+    }
+    else if(gamepad1.a){
+      LeftBack.setPower(0.2);
+    }
+    else{
+      LeftBack.setPower(0);
+      LeftFront.setPower(0);
+      RightFront.setPower(0);
+      RightBack.setPower(0);
     }
   }
 

@@ -15,20 +15,19 @@
  * servo(position)
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.robotcontroller.internal;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
 
-@Autonomous(name = "AutoFoundationMove", group = "")
-public class AutoFoundationMove extends LinearOpMode {
+@Autonomous(name = "AutoDepotRed", group = "")
+public class AutoDepotRed extends LinearOpMode {
   private DcMotor LeftFront;
   private DcMotor LeftBack;
   private DcMotor RightFront;
@@ -56,8 +55,8 @@ public class AutoFoundationMove extends LinearOpMode {
     LeftBack = hardwareMap.dcMotor.get("LeftBack");
     RightFront = hardwareMap.dcMotor.get("RightFront");
     RightBack = hardwareMap.dcMotor.get("RightBack");
-    ColorFront = hardwareMap.colorSensor.get("ColorFront");
-    ColorBottom = hardwareMap.colorSensor.get("ColorBottom");
+    ColorFront = hardwareMap.colorSensor.get("colorFront");
+    ColorBottom = hardwareMap.colorSensor.get("colorBottom");
 
 
     ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
@@ -65,18 +64,9 @@ public class AutoFoundationMove extends LinearOpMode {
     //these are functions below
     call();
     set();
-    motor(0.3,2,false);
-    move(0.6, 0, 0, 3);
-    motor(0.5,1.5, true);
-    move(-0.6,0,0,2);
-    motor(-0.3,2,false);
-    //rotation here bkuz other rotation code broke
-    LeftBack.setPower(0.5);
-    LeftFront.setPower(0.5);
-    RightBack.setPower(-0.5);
-    RightFront.setPower(-0.5);
-    move(0.6,0, 0,3);
-    print();
+    servo(1);
+    //motor(0.3,1.5,false);
+    move(0.3, 0, 0, 3);
   }
 
   private void call() {
@@ -91,10 +81,10 @@ public class AutoFoundationMove extends LinearOpMode {
 
   private void set() {
     // Set direction of devices
-    LeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-    LeftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-    RightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-    RightBack.setDirection(DcMotorSimple.Direction.FORWARD);
+    LeftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+    LeftBack.setDirection(DcMotorSimple.Direction.FORWARD);
+    RightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    RightBack.setDirection(DcMotorSimple.Direction.REVERSE);
     ArmMotor.setDirection(DcMotorSimple.Direction.FORWARD);
   }
 
@@ -109,10 +99,10 @@ public class AutoFoundationMove extends LinearOpMode {
     wheelSetA = (y - x) * (1 - x * multiplierTurn) * magnitude / highest;
     wheelSetB = (y + x) * (1 - x * multiplierTurn) * magnitude / highest;
 
-    LeftFront.setPower((wheelSetA + gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
-    LeftBack.setPower((wheelSetB + gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
-    RightFront.setPower((wheelSetB - gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
-    RightBack.setPower((wheelSetA - gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
+    LeftFront.setPower((wheelSetA + rotation * multiplierTurn) * multiplierWheels);
+    LeftBack.setPower((wheelSetB + rotation * multiplierTurn) * multiplierWheels);
+    RightFront.setPower((wheelSetB - rotation * multiplierTurn) * multiplierWheels);
+    RightBack.setPower((wheelSetA - rotation * multiplierTurn) * multiplierWheels);
 
     sleep((long) (duration*1000));
     LeftFront.setPower(0);
@@ -131,11 +121,5 @@ public class AutoFoundationMove extends LinearOpMode {
 
   private void servo(double position) {
     ArmServo.setPosition(position);
-  }
-
-  private void print() {
-    // Prints data for debug purposes
-    telemetry.addData("gamepad1 left stick x", gamepad1.left_stick_x);
-    telemetry.update();
   }
 }
