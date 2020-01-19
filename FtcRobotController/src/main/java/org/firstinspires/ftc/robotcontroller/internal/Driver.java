@@ -103,10 +103,10 @@ public class Driver extends LinearOpMode{
     wheelSetA = (gamepad1.left_stick_y - gamepad1.left_stick_x) * (1 - gamepad1.right_stick_x * multiplierTurn) * magnitude / highest;
     wheelSetB = (gamepad1.left_stick_y + gamepad1.left_stick_x) * (1 - gamepad1.right_stick_x * multiplierTurn) * magnitude / highest;
 
-    LeftFront.setPower((wheelSetA + gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
-    LeftBack.setPower((wheelSetB + gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
-    RightFront.setPower((wheelSetB - gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
-    RightBack.setPower((wheelSetA - gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
+    LeftFront.setPower((wheelSetA - gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
+    LeftBack.setPower((wheelSetB - gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
+    RightFront.setPower((wheelSetB + gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
+    RightBack.setPower((wheelSetA + gamepad1.right_stick_x * multiplierTurn) * multiplierWheels);
 
     //multiplier for wheel speed
     if(gamepad1.left_trigger > 0.5) {
